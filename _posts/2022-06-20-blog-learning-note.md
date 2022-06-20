@@ -18,6 +18,6 @@ permalink: /:categories/blog_config
 
 $$
 
-\sqrt(x^2)
+\sqrt{x^2}
 
 $$
