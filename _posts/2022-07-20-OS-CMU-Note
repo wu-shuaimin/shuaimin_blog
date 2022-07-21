@@ -1,0 +1,157 @@
+---
+layout: 'post'
+title: 'OS CMU Note' 
+---
+
+
+
+## Machine Level Language
+
+Intel x86 Processors and ARM are the two dominant players in the market.
+
+* Architecture (Instruction Set Architecture ISA): The part of a processor design that one needs to understands to write assembly code.
+* Microarchitecture: Implementation of architecture.
+* Machine Code: The bit level code that a machine excutes
+* Assembly Code: The text representation of machine code.
+
+### Assembly/Machine Code
+
+Programmer visible state:
+
+* Program Counter(PC): Address of next instruction
+* Register File: A Number of memory location given by **Name**
+* Condition Code: Store status information about recent logical arithmetic
+* Memory: An array of bytes.
+
+compile with command: gcc -Og -S p1.c
+
+#### Procetures turning Programms into Machine Code
+
+1. C programs p1.c by Compile
+2. Asm programs p1.s by Assembler
+3. Object programs p1.o by Linker
+4. Excutable program
+
+##### Compiling into Assembly Code
+
+``` c
+{
+    // c code
+long plus(long x, long y);
+
+void sumstore(long x, long y, long *dest)
+{
+    long t = plus(x, y);
+    *dest = t;
+}
+
+}
+
+{
+// x86-64 assembly
+pushq  %rbx
+movq   %rdx, %rbx
+call   plus
+moveq  %rax, (%rbx)
+popq   %rbx
+ret    
+
+}
+
+gcc -Og -S sum.c
+```
+
+This code produces sum.s
+
+##### Assembly Characteristics
+
+Data Types
+
+* Integer: 1,2,4,8 bytes
+* Floating point: 4,8,10 bytes
+* Code: Byte sequences encoding series of instructions
+* No aggregate types such as arrays or structures. Only gondiguously allocated bytes in memory.
+
+Operations
+
+* Perform arithmetic function on register or memory data, but the operations are very limited.
+* Transfer data between memory and register: 
+  * load data from memory into register
+  * store register data into memory
+* Transfer Control: This depends on low level features of design.
+  * Unconditional jumps
+  * Conditional branches
+
+#### From Assembly Code to Object Code
+
+* Assembler:
+  * Translates .s into .o
+  * Binary encoding of each instruction
+  * Nearly-complete emage of executable code
+  * Missing linkages between code in different files
+* Linker
+  * Resolves references between files
+  * Combines with static run-time libraries
+  * Some libraries are dynamically linked
+  * Linker links the requested files with the current program
+
+##### Disassembling Object Code
+
+Disassembler: objdump -d sum
+
+* Useful for examining object code
+* Analyzes bit pattern of series of instructions
+
+* You can also use **gdb** for disassembling
+
+### Assembly Basics: Registers, operands, move
+
+#### x86-64 Integer Registers
+
+16 registers for 64 bit:
+
+* %rax
+* %rbx
+* %rcx
+* %rdx
+* %rsi
+* %rdi
+* %rsp
+* %rbp
+* %r8
+* %r9
+* %r10
+* %r11
+* %r12
+* %r13
+* %r14
+* %r15
+
+#### Moving Data
+
+* movq Source, Dest: (<- this is the assembly code)
+* Operand Types:
+  * Immediate: constant integer data
+    * \$0x400, $-533
+  * Register: one of 16 integer registers
+    * %rax, %r13
+    * **%rsp** is reserved for special use
+    * Others have special uses for particular instructions
+  * Memory: 8 consecutive bytes of memory at address given by register
+    * %rax
+
+**moveq moves three types of information constant, registers, and memory.**
+
+* Source: Immediate:
+  * Destination:
+  * Register: movq \$0x4, %rax ---C  temp = 0x4;
+  * Memoery: movq \$-147, (%rax) ---C *p = -147;
+  * Move from register to memory or vice versa
+* Source: Register:
+  * Destination:
+  * Register: movq %rax, %rdx ---C temp2 = temp1;
+  * Memoery: movq %rax, (%rdx) ---C *p = temp;
+  * Move from register to memory or vice versa
+* Source: Memory
+  * Destination:
+  * Register: movq (%rax), %rdx ---C temp = *p;
