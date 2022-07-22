@@ -155,3 +155,92 @@ Disassembler: objdump -d sum
 * Source: Memory
   * Destination:
   * Register: movq (%rax), %rdx ---C temp = *p;
+
+#### Simple Memory Addressing Modes
+
+* Normal: movq (%rcx), %rax 
+  * The parenthesis indicates that use the register's memory location
+* Displacement: movq 8(%rbp), %rdx
+  * Access the memory location of the value that offset 8 by the given register.
+
+#### Code Demonstration
+
+**Remember**: %rdi will be the register of the first argument, and %rsi will be the register of the second argument.
+
+``` C
+void swap (long *xp, long *yp)
+{
+  long t0 = *xp;
+  long t1 = *yp;
+  *xp = t1;
+  *yp = t0;
+}
+
+// Machine Level Code
+
+swap:
+movq (%rdi), %rax # t0 = *xp Use $rdi as an address, copy that memory location and store the result and register %rax
+movq (%rsi), %rdx # t1 = *yp Copy the value at the memory location %rsi to the register %rax
+movq %rdx, (%rdi) # *xp = t1 Copy the value in the register %rax back to the memory %rdi
+movq %rax, (%rsi) # *yp = to Copy the value in the register %rdx back to the memory %rsi
+ret
+```
+
+Complete Memory Addressing Modes
+
+* Most General Form: D(Rb, Ri, S) / Mem[Reg[Rb] + S*Reg[Ri] + D]
+  * D: Displacement 1,2, or 4 bytes
+  * Rb: Base register: any of 16 integer regsiter
+  * Ri: Index register: any, excep for %rsp
+  * S: Scale: 1,2,4, or 8 (why these numbers?)
+* Special Cases
+  * (Rb, Ri): Mem[Reg[Rb] + Reg[Ri]]
+  * D(Rb, Ri): Mem[Reg[Rb] + Reg[Ri] + D]
+  * (Rb, Ri, S): Mem[Reg[Rb] + S*Reg[Ri]]
+
+Address Computation Instruction
+
+* leaq Src, Dst
+  * Src is address mode expression
+  * Set Dst to address denoted by expression
+* Uses
+  * Computing address without a memory reference
+    * p = &x[i];
+  * computing arithmetic expression of the form x+k*y (k=1,2,4, or 8)
+
+``` C
+long m12(long x)
+{
+  return x*12;
+}
+
+ASM by compiler
+
+leaq (%rdi, %rdi, 2), %raw  # t <- x+2*x
+salq $2, %rax  # return 
+```
+
+#### Arithmetic Operations
+
+Two Operand Instructions
+
+* addq Src, Dest # Dest = Dest + Src
+* subq Src, Dest # Dest = Dest - Src
+* imulq Src, Dest # Dest = Dest * Src
+* salq Src, Dest # Dest = Dest << Src  also called shlq
+* sarq Src, Dest # Dest = Dest >> Src  Arithmetic
+* shrq Src, Dest # Dest = Dest >> Src  Logical
+* xorq Src, Dest # Dest = Dest ^ Src
+* andq Src, Dest # Dest = Dest & Src
+* orq Src, Dest # Dest = Dest | Src
+
+
+One Operand Instructions
+
+* incq Dest # Dest = Dest + 1
+* decq Dest # Dest = Dest - 1
+* negq Dest # Dest = -Dest
+* notq Dest # Dest = ~Dest
+
+**See CSAPP for more instructions**
+
