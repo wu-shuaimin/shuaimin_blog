@@ -1,0 +1,78 @@
+---
+layout: 'post'
+title: 'OS CMU Note Data Representation' 
+---
+## Data Representation
+
+#### Negation: Complement & Increment
+
+> ~x + 1 = -x
+
+### Representation in memory, pointers, and strings
+
+* Programs refer data by address
+  * think it as a big array of bytes conceptually
+* An address is like an index into that array
+* A pointer variable stores an address
+* **System provides each address space to each "program"**
+
+### Ordering
+
+4-byte value: 01234567
+
+* Little Endian: Least significant bits(LSB) at the left and Most significant bits(MSB) are at right. 67452301
+* Big Endian: MSB at left and LSB at right. 01234567
+
+### Floating Points representation
+
+$$
+
+(-1)^s M 2^E
+
+$$
+
+* s: sign bit
+* M: significand (normally a fractional value in range[1.0-2.0])
+* E: exponent weights value by power of 2
+
+Precision Options
+
+* Single Precision: 32-bits (s 1bit, exp 8 bits, frac 23 bits)
+* Double Precision: 64-bits (s 1 bit, exp 11 bits, frac 52 bits)
+
+#### Three kinds of floating point numbers
+
+Resulting floating points representation s + exp + frac
+
+* Normalized
+  * When exp not equal 000000 and exp not equal 111111
+  * Exponent encoded E = exp - Bias (Bias is a provided value)
+
+Floating point 15213.0 in binary is 11101101101101 = 1.1101101101101 x 2^13
+Significant: 
+
+* M =   1.1101101101101 
+* frac = 1101101101101 
+
+Exponent: 
+
+* E = 13
+* Bias = 127
+* exp = 140 = 1000 1100(binary)
+
+**0 1000 1100 1101 1011 01101 0000000000**
+
+* Denormalized
+  * When exp = 000000 （exponent all zeros)
+  * significand: M= 0.xxxx in binary
+  
+* Special:
+  * When: exp=11111
+  * Case 1 
+    * exp = 11111, frac = 0000000
+    * represent infinity
+    * Used for operations that overflows
+  * Case 2
+    * exp = 11111, frac not = 00000
+    * Not a Number (NaN)
+    * Represents the case when no numeric value can be determined.

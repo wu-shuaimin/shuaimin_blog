@@ -1,11 +1,11 @@
 ---
 layout: 'post'
-title: 'OS CMU Note' 
+title: 'OS CMU Note Machine Language' 
 ---
 
 
 
-## Machine Level Language
+## Machine Level Language Basics
 
 Intel x86 Processors and ARM are the two dominant players in the market.
 
@@ -243,4 +243,18 @@ One Operand Instructions
 * notq Dest # Dest = ~Dest
 
 **See CSAPP for more instructions**
+
+## Machine Level Language: Control
+
+### Control: condition codes
+
+* Temporary data (%rax, ...)
+* Location of runtime stack (%rsp) current stack top
+* Location of current code control point (%rip, ...)
+* Status of recent tests:
+  * CF: carry flag. The most recent operation generated a carry out of the MSB. Used to detect overflow. (for unsigned)
+  * ZF: Zero flag. The most recent operation yielded zero.
+  * SF: Sign Flag: The most recent operation yielded a negative value.(for signed)
+  * OF: Overflow Flag: The most recent operation caused a two's complement over-flow(either negative or postive) (for signed)
+
 
