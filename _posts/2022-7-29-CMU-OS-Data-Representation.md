@@ -1,7 +1,8 @@
 ---
 layout: 'post'
-categories: blog
 title: 'OS CMU Note Data Representation' 
+categories: 'OS'
+permalink: '/:categories/:title'
 ---
 
 ## Data Representation
