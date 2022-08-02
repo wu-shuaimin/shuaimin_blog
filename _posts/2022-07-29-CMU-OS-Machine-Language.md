@@ -571,3 +571,227 @@ Jumping
 * jmp *%eax: Uses the value in register %eax as the jump target. Jump directly to the value
 * jmp *(%eax): Uses in the register %eax as the read address, and use the address to get the jump target in the memory. This means use the register value as the address in the memory, and the address to get the jump target from the memory.
 
+
+#### Machine Level Programming: Procedures
+
+Mechanisms in Procedures
+
+* Passing control
+  * To beginning of procedure code
+  * Back to return point
+* Passing Data
+  * Procedure arguments
+  * Return value
+* Memory Management
+  * Allocate during procedure excution
+  * Deallocate upon return
+
+##### Stack Structure
+
+x86-64 Stack
+ 
+* Region of memory managed with stack discipline.
+* The address grows toward lower address
+* High address is the bottom of the stack, whereas lower address is the top of the stack with **Stack Pointer** %rsp
+
+Instruction: 
+
+* pushq Src
+  * Fetch operand at Src
+  * Decrement %rsp by 8
+  * Write operand at address given by %rsp
+* popq Dest
+  * Read value at address given by %rsp
+  * Increment %rsp by 8
+  * Store value at Dest (usually a register)
+
+**Thoughts**: The value is not discarded from the memory but simply the pointer to the top of the stack has decremented by 8, and the poped out value is not in the concern of the stack anymore.s
+
+##### Passing Control
+
+* Proedure Call: call *label*
+  * push return address on stack
+  * jump to *label*
+* Return Address:
+  * Address of the next instruction right after call
+* Procedure return: ret
+  * Pop Address from stack
+  * Jump to address
+
+```C
+//Assembly
+
+//leaf(long y) y in %rdi
+400540 lea 0x2(%rdi), %rax //z+2
+400544 retq //return
+
+//top(long x) x in %rdi
+400545 sub $0x5, %rdi //x-5
+400549 callq 400540<leaf> //call leaf(x-5)
+40054e add %rax, %rax  //double result
+400551 retq //Return
+
+//main
+400545 sub $0x5, %rdi //Call top(100)
+400560 mov %rax, %rdx //Resume
+
+```
+Trace table of the code
+
+|Label| PC| Instruction|%rdi|%rax|%rsp|*%rsp|Description|
+|-----|---|------------|----|----|----|-----|-----------|
+|M1|0x40055b|callq|100|-|0x7fffffffe820|-|call top(100)|
+|T1|0x400545|sub|100|-|0x7fffffffe818|0x400560|entry of top|
+|T2|0x400549|callq|95|-|0x7fffffffe818|0x400560|call leaf(95)|
+|L1|0x400540|lea|95|97|0x7fffffffe810|0x40054e|entry of leaf|
+|L2|0x400544|retq|-|97|0x7fffffffe810|0x40054e|return 97 from leaf|
+|T3|0x40054e|add|-|97|0x7fffffffe818|0x400560|resume top|
+|T4|0x400551|retq|-|194|0x7fffffffe818|0x400560|return 194 from top|
+|M1|0x400560|mov|-|194|0x7fffffffe820|-|resume main|
+
+**Thoughts on the trace table**:
+The main insight for me to this table is the value of %rsp and *%rsp. The former has the stack like structure for nested call it will decrement its address by 8 bytes (see the change on %rsp from M1 to T1). The latter points the address to execute after return from a call, and this address is the next line after the call instruction.
+
+### Passing Data
+
+Data Flow: 
+
+First 6 argments
+
+* %rdi
+* %rsi
+* %rdx
+* %rcx
+* %r8
+* %r9
+
+Return value
+
+* %rax
+
+##### Managing Local Data
+
+Stack-Based Languages
+
+* Stack Discipline
+  * State for given procedure needed for limited time
+    * From when called to when return
+  * Callee returns before caller does
+* Stack allocatd in *Frames*
+
+Stack Frames
+
+* Contents
+  * Return information
+  * Local storage (if needed)
+  * Temporary spack (if needed)
+  * **Each call to a function will create a stack frame**. This is similar to java method which have access to its local variables.
+* Management
+  * Space allocated when enter procedure
+    * "Set-up" code
+    * Includes push by *call* instruction
+  * Deallocated when return
+    * "Finish" code
+    * Includes pop by *ret* instruction.
+
+x86-64/Linus Stack Frame
+
+* Current Stack Frame("Top" to Bottom)
+  * "Argument build": parameters for function about to call
+  * Local variables: if can't keep in register
+  * Saved register context
+  * Old frame pointer (optional)
+* Caller Stack Frame
+  * Return address: pushed by call instruction
+  * Arguments for this call
+
+**Note**: This Linux stack frame, I need to read further reading on CSAPP
+
+```C
+long incr(long *p, long val)
+{
+  long x = *p;
+  long y = x+val;
+  *p = y;
+  return x;
+}
+
+//assembly
+
+inc:
+  movq (%rdi), %rax
+  addq %rax, %rsi
+  movq %rsi, (%rdi)
+  ret
+
+long call_incr()
+{
+  long v1 = 15213;
+  long v2 = incr(&v1, 3000);
+  return v1+v2;
+}
+
+//assembly
+
+call_incr:
+  subq $16, %rsp
+  movq $15213, 8(%rsp)
+  movl $3000, %esi
+  leaq 8(%rsp), %rdi
+  call incr
+  addq 8(%rsp), %rax
+  addq $16, %rsp
+  ret
+```
+
+**Note**: movl %exx zeros out high order 32 bits, and movl is 1 byte shorter than movq
+
+##### Register Saving Convention
+
+* who calls who is caller
+* who is called who is callee
+
+* Caller saved: caller saves temporar values in its frame before using
+* Callee restores them before returning to caller
+
+##### x86-64 Linux register usage
+
+* %rax
+  * return value
+  * caller-saved
+  * can be modified by procedure
+* %rdi, ...,%r9
+  * arguments
+  * also caller-saved
+  * can be modified by procedure
+* %r10, %r11
+  * caller-saved
+* %rbx, %r12, %r13, %r14
+  * Callee-saved
+  * Callee must save & restore
+* %rbp
+  * Callee-saved
+  * Callee must save & restore
+  * May be used as frame pointer
+  * Can mix & match
+* %rsp
+  * Special form of callee save
+  * Restored to original value upon exit from procedure
+
+|Register| Usages|
+|--------|-------|
+|%rax| Return value|
+|%rdi|Arguments|
+|%rsi|Arguments|
+|%rdx|Arguments|
+|%rcx|Arguments|
+|%r8|Arguments|
+|%r9|Arguments|
+|%r10| Caller-saved Temporary|
+|%r11|Caller-saved Temporary|
+|%rbx|Callee-saved Temporaries|
+|%r12|Callee-saved Temporaries|
+|%r13|Callee-saved Temporaries|
+|%r14|Callee-saved Temporaries|
+
+
