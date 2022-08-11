@@ -77,7 +77,7 @@ Data Types
 Operations
 
 * Perform arithmetic function on register or memory data, but the operations are very limited.
-* Transfer data between memory and register: 
+* Transfer data between memory and register:
   * load data from memory into register
   * store register data into memory
 * Transfer Control: This depends on low level features of design.
@@ -160,7 +160,7 @@ Disassembler: objdump -d sum
 
 #### Simple Memory Addressing Modes
 
-* Normal: movq (%rcx), %rax 
+* Normal: movq (%rcx), %rax
   * The parenthesis indicates that use the register's memory location
 * Displacement: movq 8(%rbp), %rdx
   * Access the memory location of the value that offset 8 by the given register.
@@ -236,7 +236,6 @@ Two Operand Instructions
 * andq Src, Dest # Dest = Dest & Src
 * orq Src, Dest # Dest = Dest | Src
 
-
 One Operand Instructions
 
 * incq Dest # Dest = Dest + 1
@@ -248,18 +247,17 @@ One Operand Instructions
 
 ## Machine Level Language: Control
 
-
 ### Assembly Code View
 
 Programmer-Visible State
 
 * PC: Program counter: Address of next instruction
-* Memory: 
+* Memory:
   * Byte addressable array
   * Code and user data
   * Stack to support procedures
 * Register file: Heavily used program data
-* Condition codes: 
+* Condition codes:
   * Store status information about most recent arithmetic or logical operation
   * Used for conditional branching
 
@@ -269,7 +267,6 @@ Turning C into Object Code
 2. text Asm program: p1.s p2.s by Assembler(gcc or as) to next stage.
 3. binary Object program: p1.o p2.o by Linker(gcc or ld) to next stage.
 4. binary excutable program p
-
 
 ### Control: condition codes
 
@@ -281,6 +278,7 @@ Turning C into Object Code
 * Return value register: %eax
 
 #### Status of condition codes by implicit setting
+
 * Status of recent tests (condition codes):
   * CF: carry flag. The most recent operation generated a carry out of the MSB. Used to detect overflow. (for unsigned overflow)
   * ZF: Zero flag. The most recent operation yielded zero.
@@ -288,6 +286,7 @@ Turning C into Object Code
   * OF: Overflow Flag: The most recent operation caused a two's complement over-flow(either negative or postive) (for signed)
 
 Example:$t = a+b $ <-> asm code: addq Src, Dest
+
 * CF set: if carry/borrow out from most significant bit(unsigned overflow)
 * ZF set: if t==0
 * SF set: if t<0 (as signed)
@@ -311,7 +310,7 @@ Example:$t = a+b $ <-> asm code: addq Src, Dest
 |sets |SF       | Negative|
 |setns|~SF      | Nonnegative|
 |setg |~(SF^OF) & ~ZF| Greater(Signed)|
-|setge|~(SF^OF) | Greater or Equal (Signed)| 
+|setge|~(SF^OF) | Greater or Equal (Signed)|
 |setl |(SF^OF)  | Less(Signed) |
 |setle|(SF^OF)& ZF | Less or Equal(Signed)|
 |seta |~CF&~ZF   | Above (Unsigned)|
@@ -390,6 +389,7 @@ General conditinal Expression Translation
 ***Conditional moves excute all codes blocks and then choose the picece of result according to condition.***
 
 Why?
+
 * Branches are **disruptive** to instruction flow through pipelines
 * Conditional moves do not require control transfer
 
@@ -560,7 +560,7 @@ Table Structure
 Jumping
 
 * Direct: jmp .L8 (jump target is denoted by label .L8)
-* Indirect: jmp *.L4(, %rdi, 8) 
+* Indirect: jmp *.L4(, %rdi, 8)
   * start of jump table: .L4
   * must scale by factor of 8 (addresses are 8 bytes)
   * Fetch target from effective address .L4 + x*8
@@ -570,7 +570,6 @@ Jumping
 
 * jmp *%eax: Uses the value in register %eax as the jump target. Jump directly to the value
 * jmp *(%eax): Uses in the register %eax as the read address, and use the address to get the jump target in the memory. This means use the register value as the address in the memory, and the address to get the jump target from the memory.
-
 
 #### Machine Level Programming: Procedures
 
@@ -589,12 +588,12 @@ Mechanisms in Procedures
 ##### Stack Structure
 
 x86-64 Stack
- 
+
 * Region of memory managed with stack discipline.
 * The address grows toward lower address
 * High address is the bottom of the stack, whereas lower address is the top of the stack with **Stack Pointer** %rsp
 
-Instruction: 
+Instruction:
 
 * pushq Src
   * Fetch operand at Src
@@ -636,6 +635,7 @@ Instruction:
 400560 mov %rax, %rdx //Resume
 
 ```
+
 Trace table of the code
 
 |Label| PC| Instruction|%rdi|%rax|%rsp|*%rsp|Description|
@@ -654,7 +654,7 @@ The main insight for me to this table is the value of %rsp and *%rsp. The former
 
 ### Passing Data
 
-Data Flow: 
+Data Flow:
 
 First 6 argments
 
@@ -669,7 +669,16 @@ Return value
 
 * %rax
 
-##### Managing Local Data
+Regsiters for passing function arguments
+
+|Operand Size(bits)|1|2|3|4|5|6|
+|------------------|-|-|-|-|-|-|
+|64|%rdi|%rsi|%rdx|%rcx|%r8|%r9|
+|32|%edi|%esi|%edx|%ecx|%e8d|%e9d|
+|16|%di|%si|%dx|%cx|%r8w|%r9w|
+|8|%dil|%sil|%dl|%cl|%r8b|%r9b|
+
+#### Managing Local Data
 
 Stack-Based Languages
 
@@ -794,4 +803,102 @@ call_incr:
 |%r13|Callee-saved Temporaries|
 |%r14|Callee-saved Temporaries|
 
+#### Machine Language: Data
+
+Basic Principles: T A[N];
+
+1. It allocates a contiguous region of L . N bytes in memory, where L is the size (in bytes) of data type T
+2. It introduces an identifier A that can be used as a pointer to the beginning of the array.
+
+#### Array Access
+
+The array accessing A[i], will be encoded into assembly code, where i is stored in the register %rcx
+
+```C
+movl (%rdx, %rcx, 4), %eax
+```
+
+and the instruction compute $x_A + 4i$.
+
+**Note** 4 is a scalling factor, which includes 1,2,4,8.
+
+The memory access formula is
+
+```C
+int P[5];
+short Q[2];
+int **R[9];
+double *S[10];
+short *T[2];
+```
+
+|Array|Element Size|Total Size|Start Address|Element i|
+|-----|------------|----------|-------------|---------|
+|P|4|20|$x_p$|$x_p+4i$|
+|Q|2|4|$x_Q$|$x_Q+2i$|
+|R|8|72|$x_R$|$x_R+8i$|
+|S|8|80|$x_S$|$x_S+8i$|
+|T|8|80|$x_T$|$x_T+8i$|
+
+#### Multi-dimensional Array (Nested)
+
+```C
+int A[5][3]
+
+```
+
+The array elements are ordered in memory in row-major order, meaning all elements in a row are stored contiguously. For example, elements of 1st row will be stored contiguously, and then followed by the 2nd row, so on.
+
+A[i][j] is element of type T, which requires K bytes.
+
+Address $A + (i *C + j)* K$ or $A + i*K*C + K*j$
+
+
+
+**This is how you compute the address for accesing element in the array**
+
+* K is the size of the data type
+* C is the number of columns in a row
+* i and j are the row and column you want to access
+
+$C*K$ computes the number of bytes required for a row, and $i*C*K$ directs the pointer to the specific row. $j*K$ moves the pointer to the element you want.
+
+The computation in assembly starts at $i*C$(line 1 in asm), and then compute $A + 4*i*C$ by ***leaq*** instruction. Finally, compute $A+4*i*C + 4*j$ by ***movl*** 
+
+```C
+int fix_ele(fix_matrix A, size_t i, size_t j)
+{
+    return A[i][j];
+}
+
+//Assembly
+// A in %rdi, i in %rsi, j in %rdx
+sqlq $6, %rsi     //64*i
+addq %rsi, %rdi   //A + 64*i
+movl (%rdi, %rdx, 4), %eax  //M[A + 64*i +4*j]
+ret
+
+//general case n in %rdi, A in %rsi, i in %rdx, j in %rcx
+imulq $rdx, $rdi  //n*i
+leaq  ($rsi, %rdi, 4), %rax  //A+4*n*i
+movl  (%rax, %rcx, 4), %eax 
+ret
+```
+
+Recall the formula $A + K(i*C + j)$
+
+### Data Alignment
+
+* 1 byte: char
+* 2 byte: short
+* 4 byte: int, float
+* 8 byte: double, long, char *
+
+Within the structure, for example, data type int must start with address of multiple of 4, and for double and pointers the address must start with multiple of 8.
+
+The overall data alignment of the structure must ends wit multiple of the largest data type K byte. For example, if there is a pointer in the structure, the overall structure must ends with multiple of 8.
+
+Array of structure: This is similar to the overall alignment above. The array has length multiple of the structure, so if the structure satisfies the overall alignment, the array will satisfy too. For exmaple, if the structure has overall length of 24 bytes, then the array will be multiple of 24 and within the structure the alignment is the same as the individual structure
+
+To save space in a program: Write larger fields first
 
