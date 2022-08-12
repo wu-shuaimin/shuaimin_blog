@@ -902,3 +902,71 @@ Array of structure: This is similar to the overall alignment above. The array ha
 
 To save space in a program: Write larger fields first
 
+## Machine level programming: Advanced Topics
+
+### Memory Layout
+
+x86-64 Linux Memory Layout
+
+* Stack: Runtime stack (8mb limit) stores local variables
+* Heap: Dynamically alloated as needed
+* Data: Statically allocated data
+* Text/ Shared Libraries: Excutable machine instructions, with read only mode.
+
+So in x86-64 linux memory, it consits of 4 components Stack, Heap, Data, Text and Shared Libraries
+
+```C
+//Memoery allocation example in C
+
+char big_array[1L];
+char huge_array[1L<<31];
+
+int global = 0;
+
+int useless(){return 0;}
+
+int main()
+{
+    void *p1, *p2, *p3, *p4
+    p1 = malloc(1L << 28); //256 MB
+    p2 = malloc(1L << 8); //256 B
+    p3 = malloc(1L << 32); //4 GB
+    p4 = malloc(1L << 8); //256 B
+
+}
+```
+|Shared Libraries|Stack|Heap|Data|Text|
+|----------------|-----|----|----|----|
+||local|p1,p2,p3,p4|big_array, huge_array|main(),useless()|
+
+### Buffer Overfow
+
+When you access some location in the memory, there might be an issue of out of bounds. In java, it's called Null pointer exception, in C it's called segmentation faults.
+
+Most common form
+
+* Unchecked lengths on string inputs
+* Particularly for bounded character arrays on the stack
+
+```C
+//C programming pointers
+
+++*p //increment the value stored at the pointer *p by 1 and return the value
+
+p*++ //return the value stored at the pointer *p and increment the pointer by 1
+
+*++p // increment the pointer by 1 and return the value stored at the incremented pointer
+```
+
+**Note:** In many string library code, such as gets(), strcpy(), strcat(), we have no way to limit on number of characters to read. This results in the buffer overflow
+
+A vulnerability is something that can cause the program to misbehave. As a hacker, the interest is to exploit these vulnerabilities to gain access to systems.
+
+Stack smashing is a situation that the data in the buffer region corrupt the region of stack so that the return address stored in the stack is corrupted to other address instead of the original correct address, and this will cause a segmentation faults. when programming in C, we need to be aware of the memory space allocated for stack, heap, and manage these resources efficiently.
+
+#### Code Injection Attack
+
+A program calls a function which requries input, and typically the input string will contain byte representation of excutable code. On machine level, the return address of the function will be stored in stack, i.e the %rsp (stack register). The attack string will be contain some paddings to fill and overflow the heap so that the return  address in stack %rsp will be overwrriten by the injected code. Now the return address might be changed to the address of the code that helps attackers to exploit the system or the application.
+
+
+### Unions
