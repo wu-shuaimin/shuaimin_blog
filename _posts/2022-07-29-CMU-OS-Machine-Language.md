@@ -968,5 +968,55 @@ Stack smashing is a situation that the data in the buffer region corrupt the reg
 
 A program calls a function which requries input, and typically the input string will contain byte representation of excutable code. On machine level, the return address of the function will be stored in stack, i.e the %rsp (stack register). The attack string will be contain some paddings to fill and overflow the heap so that the return  address in stack %rsp will be overwrriten by the injected code. Now the return address might be changed to the address of the code that helps attackers to exploit the system or the application.
 
+#### Ways to Avoid Buffer Overflow Attacks
 
+1. Avoid buffer overflow vulnerabilities in **Code**. Use function that limit number of character.
+
+* use fgets() and other f functions that bound the characters
+
+2. Employ system-level protection
+
+* Randomized Stack Offsets:
+  * At start of the program allocate random amount of space on stack
+  * Shift stack address for entire program
+  * Stack repositioned in each program excution
+  * The idea of stack randomization is that in each excution of program, the size and position of the stack will be varied making it difficult for the attacker to predict the injecting address. Furthermore, x86-64 added explicitly excute permission, and stack is non-excutable region making injected code in the stack not possible to be excuted.
+
+3. Have compiler to use *stack canary*
+
+* Placing a special value (canary) just beyond the buffer, and check for corruption before exiting function. If the canary were corrupted, then there will be an attack in the input code.
+* The idea is that will can set randomly and differently a number at 8(%rsp) before the call of each function, and after return from a function we can check if the number still equal; otherwise, we report stack check fails if not the same.
+
+```C
+//assembly code for protected buffer disassembly
+
+sub $0x18, %rsp
+mov %fs:0x28, %rax //move the randomized canary to %rax
+mov %rax, 0x8(%rsp) //move the canary value just beyond the stack at offset 8 from stack register %rsp
+xor %eax, %eax //check if they equal
+mov %rsp, %rdi
+callq 4006e0<gets>
+mov %rsp, %rdi
+callq 400570<puts@plt>
+mov 0x8(%rsp), %rax  
+xor %fs:0x28, %rax //check if after excution of functions the canary value still equals
+je 400768<echo+0x29>
+callq 400580 <_stack_chk_fail@plt>
+add $0x18, %rsp
+retq
+
+```
+
+The assembly code above is a demonstration of how the stack canary is implemented in machien level.
+
+#### Return Oriented Programming Attacks
+
+ROF attacks intergrate fragments of existing functions in libraries such as stdlib to achieve overall desired output
+
+In x86 the retq will encoded as c3, and anything before that can potentially be a gadget.
+
+**Gadget:** A sequence of byte that ends with c3
 ### Unions
+
+**Union:** is an user defined datatype assigning the largest space for its fields, but at a single time only a field can contain data.
+
