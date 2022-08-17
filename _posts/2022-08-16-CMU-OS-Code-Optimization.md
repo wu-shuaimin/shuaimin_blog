@@ -5,7 +5,7 @@ categories: 'OS'
 permalink: '/:categories/:title'
 ---
 
-# Questions:
+Questions:
 
 1. How to code optimization is estabilished in the bubble sort example?´
 2. 
@@ -117,12 +117,130 @@ down = val[inj + n];
 left = val[inj - 1];
 right = val[inj + 1];
 sum = up + down + left + right;
-
 ```
+
+**Question:** How to detect redundeny in assembly code.
+
 
 # Optimization Blockers
 
+## Limitations of Optimizing Compiler
+
+* Must not cause any change in program behavior
+* Behavior that may be obvious to the programmer can be obfuscated by lanuges and coding styles
+* Most analysis is performed only within procudures
+* Most analysis is based only on *static* information
+
+Compilers should be conservative when in doubt.
+
+## Optimization Blocker: Procedure Calls
+
+```C
+void lower(char *s)
+{
+    size_t i;
+    for(i=0; i<strlen(s); i++)
+    {
+        if(s[i] >= 'A' && s[i] <= 'Z')
+            s[i] -= ('A' - 'a');
+    }
+}
+
+// improved version
+
+void lower(char *s)
+{
+    size_t i;
+    int len = strlen(s);
+    for(i=0; i<len; i++)
+    {
+        if(s[i] >= 'A' && s[i] <= 'Z')
+            s[i] -= ('A' - 'a');
+    }
+}
+```
+
+The complexity of strlen() is O(N), with N calls of strlen() will result in $O(N^2)$. The improved version use calls only once strlen().
+
+Suggesion to Optimization Blocker: Procedure Calls
+
+* Use gcc with -O1 mode
+* Do your own code motion
+
+## Optimization Blocker: Memory Aliasing
+
+```C
+/* Sum rows of n X n matrix a and store in vector b */
+void sum_rows1(double *a, double *b, long n) 
+{ 
+    long i, j;
+    for (i = 0; i < n; i++) 
+    {
+        b[i] = 0;
+        for (j = 0; j < n; j++) 
+            b[i] += a[i*n + j];
+    }
+}
+// Assembly Code
+.L4:
+    movsd (%rsi, %rax, 8), %xmm0  //FP load
+    addsd (%rdi), %xmm0  //FP add
+    movsd %xmm0, (%rsi, %rax, 8) // FP store
+    addq $8, %rdi
+    cmpq %rcx, %rdi
+    jne .L4
+```
+
+This way of writing loops makes the machine code make moves repeatedly. This is expensive and costly. The reason for this behavior is that becasue two arrays can referencing the same part of the memory, so uncontrolled change to the programm will have unpredictable behaviors. 
+
+To avoid this repeated move, we can introduce a local variable in the outter loop and keep incrementing the variable, and at the end assign the value to the new array. Code as follows
+
+```C
+/* Sum rows of n X n matrix a and store in vector b */
+
+// Improved version
+void sum_rows1(double *a, double *b, long n) 
+{ 
+    long i, j;
+    for (i = 0; i < n; i++) 
+    {
+        long val = 0;
+        b[i] = 0;
+        for (j = 0; j < n; j++) 
+            val += a[i*n + j];
+        b[i] = val;
+    }
+}
+
+// Assembl code
+.L10:
+    addsd (%rdi), %xmm0  //FP load = add
+    addq $8, %rdi
+    cmpq %rax, %rdi
+    jne .L10
+```
+
+Look the assembly code, it doesn't require to store intermediate results.
+
+Things to keep in mind
+
+* Get in habit of introducing local variables
+  * Accumulating within loops
+  * Your way of telling compiler not to check for aliasing
+
 # Exploiting Instruction-Level Parallelism
+
+* This need general understanding of modern processor design
+* Perormance limited by data dependencies
+* Compilers ofetn cannot make these transformations
+* Lack of associaitvity and distributivity in floating point arithmetic
+
+![CPU Design](../pictures/CPU_design.png)
+
+SuperScalo Processor: **A processor can issue and execute multiple instructions in one cycle.** The instructions are retrieved from a sequential instruction stream and are usally scheduled dynamically.
+
+* Without programming effort, superscalar processor can take advantage of instruction level parallellism that most programs have
+
 
 # Dealing with Conditionals
 
