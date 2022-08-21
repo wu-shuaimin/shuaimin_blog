@@ -1,0 +1,73 @@
+---
+layout: 'post'
+title: 'Dive Into Deep Learning Note' 
+categories: 'deep_learning'
+permalink: '/:categories/:title'
+---
+The publishd book is available on [Here](https://d2l.ai/index.html). This is note will only be my summary and personal understanding to some topics in each chapter.
+
+## Introduction
+
+**Machine learning**: A machine learns with respect to a task T, performance metrics P, and type of experience E, if it reliably improves its performance P on task T following experience E.
+
+The example of developing a waking up program for speakers is a typical example for supervised learning, in which inputs and labels are provided. 
+
+Components of ML:
+
+1. Data
+2. Model
+3. Objective Function
+
+Data: 
+The data in ML should have two aspects considered, clean and large size. For clean, the data should well represent the situation we concern, which means we need to make data-cleaning prior to the experiments. On the other hand, the success of modern deep learning models has been largely contributed from big data.
+
+**However** I wonder that whetehr theory in DL regarding small dataset should be developed. For example Bayesian approach might be a possible way, and I have read blog from Standford ML professor saying the importance of small data size DL.
+
+### Kinds of Machine Learning Problems
+
+Supervised Learning: This type of problem has the form: Predict the label given input features.
+In Regression problems in SL, it provides continuous outputs and seeks to estimates relationships between inputs and outputs variables.
+Regression problems answer the question of how many, such as given the location and size of a houes, how much should the house value
+
+On the other hand, Classification problems in SL recieves class label inputs and gives class output. It tries to understand data pattern
+and their cateborical memberhsip.
+
+**Recommender System**: This field provides personalized content to users. Applications include Tik Tok, Movie Recommendation, Product retail. Given the model for any user
+we can retrieve objects rated with highest score. One of the problem of current recomender system is censored feedback, in which scores and recommendation are based on the current recommending algorithms. In other words, from my understanding, it's bised. 
+
+**Sequence Learning:** Problems that inputs and ouputs consits variable-length sequence. They require a model to either ingest a sequence or emit sequence of output (or both)
+
+### Unsupervised Learning
+
+Unsupervised Learning doesn't recieve labels or ground truth value from input, but instead the learning algorithms find the hidden pattern within the data. 
+One majoy development in UL is *self-supervising learning*, techniques that leverage aspects of data to provide supervision. 
+
+### Interacting with Enviroment
+
+![Supervised Learning Model Experiment Process](../pictures/supervised_learning_model.png)
+
+
+The training is completed in isolation with the enviroment. More precisely, the training data is obtained before the training process and the training process
+will learn from the given data to produce a prediction. *However,* we develop the learning algorithm for the sake of helping actual problem, more specifically
+to make action to interfere with the enviroment. For example, previously I wrote the example of video recommender system, and the system will make recommendation based
+on given data. This recommendations suggested to users are based on previous preference users, and users will likely select something among recommndation, which further suggest future recommendation produced by the algorithm.
+
+It's critical to realize that these recommendation might be biased ignoring other potential recommendation, because the future recommendation is based on previous recommendation.
+
+The latter pursuit opens a wide range of question in modeling
+
+* Does the enviroment remember what it did?
+* Does the enviroment want to help us or beat us? What is the position of the enviroment?
+
+### Reinforcement Learning
+
+![Reinforcement Learning Model](../pictures/reinforcement_learning.png)
+
+Reinforcement Learning aims to develop an agent that interacts with dynamic enviroment and takes actions. RL takes action over a series of time step. In each time step, it recieves observations from enviroment and choose an action to responde the enviroment through some mechanism (actuator), and finally the agent recieves reward from enviroment
+
+It's critical to point out the connection between supervised learning and reinforcement learning. SL can be casted into RL. For example, a binary classfication problem in SL can be transformed into RL by choosing one of two actions for each input. *Importantly,* RL doesn't need to know the optimal solution in front, but learn it through feedbacks. RL is suitable for partial observaion in which information is limited. Finally, RL has to balance between local optimality and exploration of strategy space. In some cases, it needs to reject the current known optimal strategy to explore other alternatives in the strategy space.
+
+### Roots of Machine Learning
+
+There are four roots for ML, statistics, information theory, theory of computation and neuroscience. Previously, due to lack of data and computing resources, researchers need to use more efficient models and (generalized) linear model and kernel methods. With recent advent in computing power (GPU) and growing size of data, deep neural network has become popular. *However*, it important to aware that the progress in Deep learning is not simply a result of growing resrouces applied to old algorithms.
+
