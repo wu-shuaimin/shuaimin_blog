@@ -71,3 +71,18 @@ It's critical to point out the connection between supervised learning and reinfo
 
 There are four roots for ML, statistics, information theory, theory of computation and neuroscience. Previously, due to lack of data and computing resources, researchers need to use more efficient models and (generalized) linear model and kernel methods. With recent advent in computing power (GPU) and growing size of data, deep neural network has become popular. *However*, it important to aware that the progress in Deep learning is not simply a result of growing resrouces applied to old algorithms.
 
+### Essence of Deep Learning
+
+Deep learning is a subset of machine learning concerned with many layers of neural networks. What differentiate deep learning is that operations learned from each of the layers are learned jointly from data
+
+> The problems that we have discussed so far, such as learning from the raw audio signal, the raw pixel values of images, or mapping between sentences of arbitrary lengths and their counterparts in foreign languages, are those where deep learning excels and traditional methods falter.
+
+*Question:* Why the traditional methods falter? What is the traditional methods mentioned here?
+
+
+Deep learning provides an *end-to-end* training. It indicates that deep learning builds the system and tunes its performance jointly rather than builds the system based on integraion of components. Traditionally, scientists separate feature-extraction from model training, but in deep learning feature extractors are replaced by automiatically tuned filters yielding better accuracy.
+
+**Note:** In DL automatically tune performance is a part of system building, whereas in traditionally approaches systems are built  based on individually tuned components.
+For example, feature extractions, model trainings, model evaluations and selections are components in a machine learning experiment, but these components are altogether included as an unity in deep leraning framework. 
+
+The abundunt data size allows us to fit the data with nonparametric models that more fit the data, albeit a sacrifice on explanability
