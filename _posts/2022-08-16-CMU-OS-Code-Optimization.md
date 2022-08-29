@@ -307,9 +307,75 @@ For an oeration with latency L and capacity C, this requires an unrolling factor
 
 For Integer both addition and multipliaction are fine with the technique, **but** FP addition and multiplication are not associative. FP will roduce different result due to rounding and overflow.
 
+### Reassociat Transformation
 
+We shift the order in which the vector elements ar econbined with the accumulated value acc, giving a form a loop unrolling "2 x 1a".
 
+```C
+void combine6(vec_ptr v, data_t *dest)
+{
+    long i;
+    long length = vec_length(v);
+    long liit = length -1;
+    data_t *data = get_vec_start(v);
+    data_t acc0 = IDENT;
+    data_t acc1 = IDENT;
 
+    for(i=0; i<limit; i+=2)
+    {
+        acc = acc OP (data[i] OP data[i+1]); //only change is the order of parenthesis
+    }
 
+    for(; i<length;i++)
+    {
+        acc = acc OP data[i];
+    }
+    *dest = acc;
+}
+```
 
+### Life in Real World: Performance Improvement
 
+1. High-Level: Choose appropriate agorithms and data structures for the problem. By careful to algorithms or coding techniques that produce poor asymptotic performance
+2. Coding Principles:
+  * Eliminate excessive function calls. Move computations out of loops whenever possible. Consider partial program modularity to gain greater efficiency
+  * Elliminate unnecessary memory references. Introduce tempoarry variables to hold intermediate results. Store a value into an array or a global variable only when the final result has been computed
+3. Low-Level Optimization:
+  * Unroll Loops to reduce overhead 
+  * Find ways to increase instrution-level parallelism by **multiple accumulators and reassociation**.
+
+### Converting conditional control transfer into conditional data transfer
+
+It's true data transfer is quicker than control transfer.
+
+```C
+void minmax(long a[], long b[], long n)
+{
+    long i;
+    for(i=0; i<n; i++)
+    {
+        if(a[i]>b[i])
+        {
+            long t = a[i];
+            a[i] = b[i];
+            b[i] = t;
+        }
+    }
+}
+
+//rewrite into a more functional way suitable for compiler
+
+void minmax(long a[], long b[], long n)
+{
+    long i;
+    for(i=0; i<n; i++)
+    {
+        long min = a[i]<b[i] ? a[i]:b[i];
+        long max = a[i]<b[i] ? b[i]:a[i];
+        a[i] = min;
+        b[i] = max;
+    }
+}
+```
+
+ 

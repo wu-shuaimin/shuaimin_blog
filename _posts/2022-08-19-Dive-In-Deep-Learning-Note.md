@@ -86,3 +86,17 @@ Deep learning provides an *end-to-end* training. It indicates that deep learning
 For example, feature extractions, model trainings, model evaluations and selections are components in a machine learning experiment, but these components are altogether included as an unity in deep leraning framework. 
 
 The abundunt data size allows us to fit the data with nonparametric models that more fit the data, albeit a sacrifice on explanability
+
+
+## Preliminaries
+
+### Automatic Differentiation
+
+```python
+import torch
+
+x = torch.arange(4.0, requires_grad=True)
+y = 2 * torch.dot(x,x)
+
+y.backward()
+```
