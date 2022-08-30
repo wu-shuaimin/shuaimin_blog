@@ -54,7 +54,7 @@ Facts:
 
 ![image](../pictures/memory_hierachy.png)
 
-Caches: A smaller, fasetr storage devie that acts as a staging area for a subset of the data in a larger, slower device.
+**Caches**: A smaller, fasetr storage devie that acts as a staging area for a subset of the data in a larger, slower device.
 
 **Important:** For each k, the faster, smaller device at level k serves as a cache for the larger, slower device at level k+1.
 
@@ -62,3 +62,8 @@ The reason why memory hierachies work is that because locality program tend to a
 
 **Big idea**: The memory hierachy create a large pool of storage that costs as cheap as storage near the bottom, but serves data to programs at the rate of fast storage near the top. This means that eventually we want the storage  cost as low as bottom storage and as fast as top storage. **Cheap and Fast**
 
+General Caching Concepts:
+
+1. Cold(compulsory) miss: it occurs because the cache starts empty and this is the first reference to the block
+2. Capacity miss: it occurs when the set of active cache blocks is larger than the cache
+3. Conflict miss: it occurs when the level  cache is larg enough, but multiple data objects all map to the same level k block.

@@ -100,3 +100,26 @@ y = 2 * torch.dot(x,x)
 
 y.backward()
 ```
+
+## Linear Neural Network for Regression
+
+### Linear Regression
+
+Whenever we want to predict a numerical value, we are dealing with regression problems.
+
+$$y = \hat{y} + \epsilon$$
+
+This is the linear regression model we use to predict true observed data y.
+
+$$\hat{y} = \vec{w}^T \vec{x} + b $$
+
+Here $\hat{y}$ is our prediction model, and vectors are column vectors. $\vec{x}$ is predictors in our model. This is means that each x is a feature of the problem we believe affect the outcome y, and $\vec{w}$ is the weight of all predictors.
+
+Besides the points mentioned in the book, I want to further mention techniques to find which variables are important for predicing the true y value, i.e. Variable Selction.
+
+$$\Omega^2 = \sum_{i=1}^d \rho_i^2$$
+
+where $\rho_i^2$ is the correlation between $x_i$ and $y$, and $Omega^2$ is squared multiple correlation, which indicate the proportion of the variation explained by the predictors. More specifically, we can rank each $\rho_i^2$ to investigate which predictor contribute more for explaining $y$. By doing the ranking, we not only can determine which variables are important for deciding y, but also which variables are not important yielding to reduction.
+
+By 
+
