@@ -176,6 +176,24 @@ Lambda: is a serverless compute service that lets you run code wihtout managing 
  3. Awalys free
  
   
+### Compute Services: Additional Compute Services:
+  
+AWS Fargate: is a serverless compute engine for containers. It allows to manager containers like Docker
+
+
+AWS Lightsail: it allows you to quickly lauch all the resources you need for small projects
+ 
+* Deploy preconfigured application, like wordpress
+* low and predictable monthly fee.
+* Includes a virtual machine, SSD based storage, data transfer, DNS management, and a static IP
+  
+ 
+ AWS Outposts: allows you to run cloud services in your internal data center
+ 
+ 
+  
+  
+  
   
   
   
