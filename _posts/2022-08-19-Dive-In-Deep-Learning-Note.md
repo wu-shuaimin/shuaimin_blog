@@ -107,7 +107,11 @@ y.backward()
 
 Whenever we want to predict a numerical value, we are dealing with regression problems.
 
-$$y = \hat{y} + \epsilon$$
+$$
+
+y = \hat{y} + \epsilon
+
+$$
 
 This is the linear regression model we use to predict true observed data y.
 
