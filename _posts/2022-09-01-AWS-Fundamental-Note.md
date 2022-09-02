@@ -96,22 +96,84 @@ Low latency is good, and high latency is bad.
 **AWS Management Console**: it allows you to access your AWS account and manage applications in your acount from a *web browser*
 
 
+Root user: the most powerful user that can create and delete the AWS acount
+
+AWS command line interface (CLI): it allows users to access AWS resource through API. This allows you to gain programmatic access to AWS resoruces
+
+## AWS Technology
+
+Services: Keep in mind what the services do, and who use this services
+
+### Elastic Compute Cloud (EC2)
+
+ECS allows you to rent and manage virtual servers in the cloud. You can grow and shrink the services you need.
+
+Methods to access an EC2 instance
+
+1. AWS management console: configuare EC2 instance through web browser
+2. Secure shell (SSH): establish a secure connection to EC2 instance from local laptop **Most common way to access linus EC2 instance**
+3. EC2 instance connect (EIC): 
+4. AWS system manager: access instance by AWs managemet console or CLI
 
 
+SSH Access
 
+1. generate a key pair, private key and public key
+2. connect via SSH
 
+EC2 Pricing Option
 
+* On-demand: pay for instances you used down to seconds. No contract and front cost
+  * You want low cost, and don't want to have contract or up front cost
+  * Your applications have unpredictable workloads that should be available all the time
+  * Your application is under development
+  * Your workloads will not run longer than a year
+  * **You can reserve capacity**
+* Spot: **only** when there is unused EC2 capacity your requests will be fullfilled.
+  * you application can be interrupted, and you don't care the start and stop time of your app.
+  * save up to 90% off on-demand
+ * Reserved Instance (RIs): you commit to use AWS for 1 or 3 year in a region
+  * you choose this when ou have steady usage, and you can commit 1 or 3 years
+  * your app. requires a capacity reservation
+  * you can choose convertible type to gain flexibility
+* Dedicated Hosts: you pay for the physical servers which can only be used by your instances.
+  * choose this when you have regulatory or corporate compilance requirements around tenancy model
+* Savings plan: allows you to commit to compute usage (in hours) for 1 or 3 years
+  * you choose this when you want to lower your bill across multiple compute services.
+  * you want the flexibility to change compute services, instance types, operating systems, or Regions
+ 
+ ### Features of EC2
+ 
+ * Elastic Load balancing: automatically distribute your load to multiple instances to avoid traffic
+  * classic load balancers
+  * application load balancers
+  * gateway load balancers
+  * network load balancers
+ * EC2 Auto Scaling (horizontal scaling): add or remove EC2 instances automatically across AZs, according to the demand
+  * vertical scaling: upgrades an EC2 instance by adding more power (CPU, RAM)
+ 
+ ### Compute Services: Lambda
+ 
+Lambda: is a serverless compute service that lets you run code wihtout managing servers
 
-
-
-
+* Scales automatically
+* Serverless indicates that you don't need to manage servers like EC2
+ 
+ Developers focus on business logic and software without considering low level machine set up
+ 
+ Lambda Features:
+ 
+ 1. supports different programming languages
+ 2. you write code using your prefered enviroment
+ 3. lambda execute your code
+ 4. lambda has 15-minutes time-out, so if your app. has processes that run longer than 15 min, it is not good.
  
  
+ Pricing Model
  
- 
- 
- 
- 
+ 1. Compute Time: pay only for compute times used, no charging if your code didn't run
+ 2. Request Count: Each request is counted when it start excuetion 
+ 3. Awalys free
  
   
   
