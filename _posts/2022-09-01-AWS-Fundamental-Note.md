@@ -142,7 +142,7 @@ EC2 Pricing Option
   * you choose this when you want to lower your bill across multiple compute services.
   * you want the flexibility to change compute services, instance types, operating systems, or Regions
  
- ### Features of EC2
+### Features of EC2
  
  * Elastic Load balancing: automatically distribute your load to multiple instances to avoid traffic
   * classic load balancers
@@ -152,7 +152,7 @@ EC2 Pricing Option
  * EC2 Auto Scaling (horizontal scaling): add or remove EC2 instances automatically across AZs, according to the demand
   * vertical scaling: upgrades an EC2 instance by adding more power (CPU, RAM)
  
- ### Compute Services: Lambda
+### Compute Services: Lambda
  
 Lambda: is a serverless compute service that lets you run code wihtout managing servers
 
@@ -195,7 +195,7 @@ AWS Batch: allows you to process large workloads in smaller chunks (or btaches).
  
  #### Storage Services S3
  
- S3 is an **object storage** services for the cloud that is highly available.
+ S3 is an **object storage** services for the cloud that is highly available. It stands for Simple Storage Service (S3)
  
  
  * Objects (or files) are stored in *buckets* (or directories)
@@ -241,7 +241,7 @@ S3 in real world application
  * analytics system
  * mobile application
  
- ### Leveraing Storage Services
+###  Leveraing Storage Services
 
 
 Amazon Elastic Block Store (EBS): EBS is a storage device (called volume) that can be attached to your instance. think about it as a hard drive
@@ -285,10 +285,141 @@ Storage Gateway: is a hybrid storage service that connects on-premises and cloud
  
 AWS Backup: helps you to manage backup across multiple instances
  
+### Content Delievery Service
+
+AWS CloudFront: a content delivery network (CDN) that delivers data and application globally with low latency. Think about it as a cache. Caches are stored in edge location.
+
+* global distribution of content
+* Security feature like DDoS protection and geo-restriction
+
+applications:
+
+* S3 Static website
+* IP Blocking
+* Prevent Attacks
+ 
+Amazon Global Accelerator: sends your users through AWS global network when accessing your content, speeding up delivery.
+
+* automatically re-routes to better network when in traffic
+* improves latency and availability of single region app.
+ 
+Amazon S3 Transfer Acceleration: improves content uploads and downloads to and from S3 buckets
  
  
- 
- 
- 
+### Understanding Networking Services: VPC and Subcomponents
+
+Networking: it conntects computers and allows sharing of data and application across the global in a secure way using virtual routers, firewalls, and network management services.
+
+Amazon Virtual Private Cloud (VPC): VPC is a foundational service that allows you to create a secure private network in the AWS cloud where you lauch your resources.
+
+
+VPC is like a fence which protects your applications.
+
+Internet Gateway: it allows public traffic to the internet from a VPC.
+
+Subnet: it allows you to *split* the network inside the VPC. In subnet, you lauch your EC2 instances
+
+**VPC Peering**: it allows you to connect two VPC together
+
+#### Creating an EC2 instance in a VPC
+
+Create a VPC
+Navigate to VPC > Your VPCs.
+Click Create VPC, and set the following values:
+Select: VPC Only
+Name tag: my-vpc
+IPv4 CIDR block: 10.0.0.0/16
+Leave the IPv6 CIDR block and Tenancy fields as their default values.
+Click Create VPC.
+Create a Public Subnet
+Click Subnets in the left-hand menu.
+Click Create subnet, and set the following values:
+VPC ID: my-vpc
+Subnet name: my-public-subnet
+Availability Zone: us-east-1a
+IPv4 CIDR block: 10.0.0.0/24
+Click Create subnet.
+Create Routes and Configure Internet Gateway
+With my-public-subnet selected, click Actions > Edit subnet settings.
+Check the box to Enable auto-assign public IPv4 address.
+Click Save.
+Click Internet Gateways in the left-hand menu.
+Click Create internet gateway.
+Set Name tag as "my-internet-gateway".
+Click Create internet gateway.
+On the next screen, click Actions > Attach to VPC.
+In the Available VPCs dropdown, select my-vpc.
+Click Attach internet gateway.
+Click Route Tables in the left-hand menu.
+Click Create route table, and set the following values:
+Name: publicRT
+VPC: my-vpc
+Click Create route table.
+On the next screen, click Edit routes.
+Click Add route, and set the following values:
+Destination: 0.0.0.0/0
+Target: Internet Gateway, my-internet-gateway
+Click Save changes.
+Click the Subnet associations tab.
+Click Edit subnet associations.
+Select the box for my-public-subnet.
+Click Save associations.
+Launch EC2 Instance in Subnet
+Navigate to EC2 > Instances.
+Click Launch instances.
+On the AMI page, select the Amazon Linux 2 AMI.
+Ensure t2.micro is selected.
+Click Review and Launch > Launch.
+In the key pair dialog, select Create a new key pair.
+Give it a Key pair name of "my-keypair".
+Click Download Key Pair.
+Click Launch Instances.
+Click View Instances, and give it a few minutes to enter the Running state.
+Access EC2 Instance
+Once the instance has a Running state, select the box next to it.
+Click Connect at the top.
+In the EC2 Instance Connect section, click Connect.
+This will open a new browser tab showing a command line interface.
+
+
+### Additional Networking services
+
+DNS: domiain name system. It directs interne traffic by connecting domain names with web servers.
+
+Amazon Route 53: a DNS service that routes users to applications
+
+* perform health checks on AWS resources
+* supports hybrid cloud architecture
+
+
+AWS Direct Connect: is a dedicated physical network connection from your on-premises data center to AWS
+
+* Data travels over a private network
+* supports a hybrid enviroment
+* AWS direct connects is a physical network connection specifically for your on-premises data with AWS data center
+
+
+AWS VPN: creates a secure connection between your internal networkds and your AWS VPCs
+
+* similar to direct connects but travels through public internet
+* data is encrypted
+
+
+API Gateway: it allows you to build and manage APIs
+
+* share data between system and integrate with services like lambda
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   
