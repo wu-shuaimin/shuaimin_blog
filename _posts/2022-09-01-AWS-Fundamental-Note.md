@@ -409,17 +409,173 @@ API Gateway: it allows you to build and manage APIs
 
 * share data between system and integrate with services like lambda
 
+### AWS Database services
+
+Amazon Relational Database Service (RDS): is a service that makes it easy to lauch relational databases
+
+* automatic backups, operating system maintenance
+* offer high availability
 
 
+Amazon Aurora: is relational database compitibale with MySQL and PostgreSQL created by AWS
+
+* 5x faster than normal mysql and 3x faster than normal postgresql
 
 
+Amazon DynamoDB: is a fully managed NoSQL key-value and document database
+
+* key-value database
+* serverless (upgrade is done by AWS)
+* No relational
+* NoSQL
+
+Amazon Document DB: is a fully managed document database that supports MongoDB
+
+* serverless
+* non-relational
+* Supports MongoDB
+
+Amazon ElastiCache: is a fully managed in-memory datastore compatible with Redis or Memcached.
+
+* In-memory database
+* compatible with Redis or Memcached engines
 
 
+Amazon Neptune: is a fully managed graph database that supports highly connected datasets
+
+* good for social media datasets
 
 
+### Migration and Transfer Services
+
+Many companies want to migrate their business to the cloud with low cost and fast speed.
 
 
+Database Migration Service (DMS): helps you migrate database to or within AWS
+
+* migrate on-premieses db to AWs
+* virtually no downtime
+* support homogeneous and heteroeneous migration
 
 
+Server Migration Service (SMS): allows you to migrate on-premises servers to AWS.
+
+* Migrate on-premises servers to AWS
+* servers saved as a new Amazon Machine Image 
+* Use AMI to lauch servers as EC2 instances
+
+
+Snow Family: it allows you to transfer large amount of on-premises data to AWs using a physical device.
+
+* Snowcone:  smallest data transport devices
+  * 8 terabytes
+  * offline shipping
+  * online with DataSync
+* Snowball and snowball edge
+  * petabyte-scale data transport solution, which is *cheaper* than internet transfer
+  * transfer data in and out
+  * snowball edges supports EC2 and Lambda
+* Snow mobile:
+  * multi-petabytes or exabytes scale
+  * data loaded to S3
+  * securely transport
+
+
+DataSync: it allows for online data transfer from on-premises to AWS storage services like S3 or EFS. 
+
+* migrates data from on-premises to AWS
+* copy data over direct  connect or the internet
+* replicate data cross-region or cross account
+
+
+### Data Warehouse
+
+A data warehouse is a data storage solution that aggregates massive amount of historical data from disparate sources.
+
+Benefits of data warehouse:
+
+* support quering, reporting, analytics and business intelligence. they are not used for transaction processing
+
+
+Amazon Redshift: is a scalable data warehouse solution
+
+* Data Warehousing solution. Redshift improves speed and effciency
+* handles exabyte-scale data
+
+real world application for redshift
+
+* data consolidation: when you want to consolidate multiple data sources for reporting
+* when you want run a database that doesn't require real time transaction processing (insert, update, and delete) 
+
+
+#### Analytics
+
+analytics:the act of querying or processing your data
+
+
+Athena: is a query srevice for Amazon S3
+
+* Query service
+* Analyze S3 data using SQL
+* pay per query
+* serverless
+
+Amazon Glue: prepares your data for analytics
+
+* prepare and load data
+* Extract, transform, load (ETL) service
+* helps to better understand your data
+
+Kinesis: allows you to analyze data and video streams in real time.
+
+* analyze real-time streaming data
+* supports video, audio application logs, website clickstreams and IoT
+
+Elastic MapReduce (EMP): it helps you process large amount of data
+
+* process big data
+* analyze data using hadoop
+* works with big data frameworks
   
+Data Pipeline: it helps you move data between compute and storage services running either on AWS or on-premises
+
+* moves data at specific intervals
+* sends notification on success or failure
+* Moves data based on conditions
+
+
+QuickSight: helps you visualize your data
   
+
+### Machine Learning Services
+
+Rekognition: allows you to automate your image and video analysis.
+
+
+Comprehend: is a NLP service that finds relationships in text.
+
+
+Polly: turns text into speech
+
+SageMaker: helps you build, train, and deploy machine learning models quickly
+
+* prepare data for models
+* train and deploy models
+* provides deep learning AMIs
+
+Translate: provides language translation
+
+Lex: it helps you build conversational interfaces like chatbots.
+
+* recoginizes speech and understands language
+* build highly engaging chatbots
+
+
+
+
+
+
+
+
+
+
