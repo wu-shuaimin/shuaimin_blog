@@ -571,6 +571,169 @@ Lex: it helps you build conversational interfaces like chatbots.
 * build highly engaging chatbots
 
 
+### Developer Tool
+
+Cloud 9: web based IDE
+
+CodeCommit: private git repository
+
+CodeBuild: build and test application source code
+
+CodeDeploy: manages the deployment of code to compute services in the cloud or on-premises
+
+* deploy code to EC2, Fargate, Lambda, and on-premises
+
+CodePipeline: automatse the software release process
+
+* quickly deliver new features and updates
+* integrate with codebuild and codecommit, and codedeploy
+* dev->test->prod
+
+X-Ray: helps you debug production application
+
+CodeStar: helps developers work together projects
+
+* It integrate whole production pipeline, including codecommit, codebuild, codedeploy
+
+
+Exam: 
+
+* codecommit: services similar to github
+* cloud 9: web based IDE
+* codedeploy: deploy an application to servers running on premises and in the cloud
+* codepipeline: allows you to implement a CI/CD pipeline
+
+
+### Deployment and Infrastructure Management Services
+
+Infrastructure as Code (IaC): allows you to write a script to provision AWS resources. The good things about it is that you can provision resources in a *reproducible* manner which saves time.
+
+
+CloudFormation: allows you to provision AWS resources using Infrastructure as Code (IaC). 
+
+* create template for provisioning resources
+
+
+Elastic BeanStalk: allows you to deploy your web app. and web services to AWS
+
+* provision resources
+* auto. handle deployment
+
+OpsWorks: allows you to use Puppet to automate the configuration of your services and deploy code.
+
+* manage on-premises servers or EC2 instance in AWS
+
+Exam: 
+
+* CloudFormation: it supports infrastructure automation using infrastructure as Code (IaC)
+* Elastic Beanstalk: it is *only* used to deploy  applications to the AWS Cloud. **Not for application deployed on-premises**
+* OpsWorks: can deploy both on premises and AWS cloud. iIt automates infrastructure management usign Chef or Puppet
+
+
+### Create a DynamoDB using CloudFormation
+
+Download template:
+1. Navigate to the provided CloudFormation template for this lab: acg-dynamodb-template.yaml.
+2. Click Raw.
+3. Right-click and select Save As.
+4. Make sure the Format is YAML.
+5. save
+
+Lauch Cloudformation Stack
+
+1. In the AWS Management Console, navigate to CloudFormation.
+2. Click Create stack > With new resources (standard).
+3. Select Template is ready.
+4. Select Upload a template file.
+5. Click Choose file.
+6. Select the YAML file you downloaded.
+7. Click Open.
+8. Click Next.
+9. For Stack name, enter MyStack.
+10. Click Next.
+11. On the Configure stack options page, click Next.
+12. On the Review MyStack page, click Create stack.
+
+Verify DynamoDB Table:
+
+1. Once the stack is created, navigate to DynamoDB > Tables.
+2. Click the listed Inventory table.
+3. Note that there aren't currently any items, but the table is ready for items to be added.
+
+
+### Messaging and Integration Services: SQS
+
+Loose coupling: components are connected but are not dependent
+
+Simple Queue Service (SQS): is a message queuing service that allows you to build loosely coupled distributed systems.
+
+* Allows components to components communication using messages
+* multiple components can add messages to the queue.
+* messages are processed in an asynchonous manner.
+
+Exam: 
+
+* SQS is processed in FIFO order
+* supports loose coupling
+
+Simple Notification Service (SNS): allows you to send emails and text messages from your applications.
+
+
+Simple Email Service (SES): is an email service that allows you to send richly formatted HTML emails from your applications.
+
+Exam: 
+
+* SNS: plain text emails
+* SES: rich HTML-formated emails
+
+
+### Auditing, Monitoring, and Logging Services
+
+CloudWatch: is a collection of services that help you monitor and observe your cloud resources.
+
+* cloudwatch alarm
+* cloudwatch logs
+* cloudwatch metrics
+* cloudwatch events
+
+CloudTrail: tracks user activity and API calls within your account. 
+
+Exam:
+
+* cloudwatch: monitor your EC2 instances
+* cloudtrail: track username, event time and name, IP address, access key, region, and error code
+
+
+### Aditional Services
+
+
+Amazon workspaces: allows you to host virtual desktops in the cloud
+
+Amazon Connect: is a cloud contact center service
+
+Exam: 
+
+* workspace: allows you to virtualize desktops
+* connect allows you to build a help desk in the cloud
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
