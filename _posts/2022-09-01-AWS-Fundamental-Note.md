@@ -846,9 +846,17 @@ Cognito: helps you control authentication and authorization of your mobile and w
 
 ### Data Encryption and secrets management services
 
+Data in flight: data is moving from one to another
 
+Data at rest: data is inactive stored
 
+Key management service(KMS): generage and store encryption keys
 
+Secrets Manager: store you secrets (passworkd or keys)
+
+* integrate with documentDB
+
+Cloud HSM: is a hardware security module (HSM) used to generate encryption keys
 
 
 
