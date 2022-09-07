@@ -717,14 +717,134 @@ Exam:
 * connect allows you to build a help desk in the cloud
 
 
+Identity and Access Management (IAM): allows you to control access to your AWS services and resources
+
+* secure you cloud resources
+* you define what they can do and who can access
+* a free global service
+
+
+Identities: who can access your resources
+
+Access: what resources they can access
+
+Principle of Minimum Privilage: involves giving a user the minimum access required to get the work done.
+
+
+Groups: a collection of IAM users which helps you apply access control to all group members
+
+1. Administrators
+2. developers
+3. analysts
+
+
+### IAM users permission
+
+Roles: define access permission and are temporarily assumed by an IAM user or service
+
+
+Policies: you managem permission for IAM users, groups, and roles by creating a policy document in JSON format and attaching it.
+
+
+Best practice of IAM
+
+1. enable MFA privileged users
+2. use strong password
+3. use individual users instead of the root user
+4. use roles for Amazon EC2 instances
+
+Exam:
+
+* difference between users, groups, roles, and policies
+* IAM best practices
+* real world user cases
+* IAM credential report: list of all users in your account and the status of each account
+
+
+Create Users and manage permission using groups and policies in IAM
+
+Create a customer managed policy
+1. Navigate to IAM > Users.
+2. Note the list of lab-provided users.
+3. Click Policies in the left-hand menu.
+4. Click Create policy.
+5. Click Import managed policy on the right side of the page.
+6. Search for and select AWSLambda_FullAccess.
+7. Click Import.
+8. Next to EC2, click Remove.
+9. Click Next: Tags.
+10. Click Next: Review.
+11. Name the policy my_dev_access.
+12. Click Create policy.
+
+Create a group controlled via a customer manage policy
+
+1. Click User groups in the left-hand menu.
+2. Click Create group, and set the following values:
+3. User group name: Enter developers.
+4. Attach permissions policies: Select my_dev_access.
+5. Click Create group.
+
+Assign Users to the Group
+
+1. Click the developers group.
+2. Under the Users tab, click Add users.
+3. Select the four developer users.
+4. Click Add users.
+
+
+### Application security services
+
+Web application firewall (WAF): protect your web app. against common web attacks
+
+* protect against SQL injection
+* protect against cross site scripting
+* deploy WAF for cloud front to block attacks
+
+Distributed Denial of Service (DDos): causes a traffic jam on a web to cause it crash
 
 
 
+Shield: DDos protection service
+
+Shield standard: free protection agains common and freqentyly occuring attacks
+
+Shield Advanced: an enhanced protection for a fee
+
+Sheidl Advanced is supported on following services:
+
+* Cloud Front
+* Route 53
+* Elastic Load Balancing
+* AWS global accelerator
+
+Macie: use machine learning to discover and protect sensitive data
+
+Exam: 
+
+* WAF: protect against SQL injection and cross site scripting
+* Shield: protect from DDos attacks, and works with CloudFront, Route 53, Elastic load balancing, and AWS global accelerator
+* Macie: helps you find sensitive information
+
+### Additional Security Services:
+
+Config: allows you to assess, audit, and evaluate the configurations of your resources
 
 
+GuardDuty: is an intelligent threat detection system that uncovers unauthorized behavior.
+
+* use ML, and built-in detection for EC2,S3, and IAM
+
+Inspector: works with EC2 instances to uncover and report vulnerabilities
+
+Artifact: security and compilance reports
+
+Cognito: helps you control authentication and authorization of your mobile and web app.
+
+* built-in sign in and sign up service in your app.
 
 
-
+### Data Encryption and secrets management services
 
 
 
