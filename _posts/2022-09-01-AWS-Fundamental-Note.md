@@ -858,6 +858,208 @@ Secrets Manager: store you secrets (passworkd or keys)
 
 Cloud HSM: is a hardware security module (HSM) used to generate encryption keys
 
+## Billing and Pricing
+
+
+### AWS Pricing
+
+Pricing:
+
+1. compute: hourly from lauch to termination
+2. storage: data you stored in the cloud
+3. outbound data transfer: data moving between system.
+
+Free Offer Types
+
+1. 12 month free: following initial sign up data
+2. always free: offers do not expire to all AWS customers
+3. trials: short term free trails starting from the data you activate a service
+
+EC2 Pricing
+
+1. on demand
+2. saving plan
+3. reserved instances
+4. spot instances: only lauch when there is available resources
+5. dedicated hosts
+
+Lambda Pricing:
+
+1. number of requests
+2. code execution time
+3. 1 million requests per month
+
+
+S3 pricing: pay as you go. you pay based on
+
+1. storage class
+2. number of objects stored in the cloud
+3. data transfer: the amount of transfered out of S3 region
+4. requests and data retrieval
+
+RDS Pricing:
+
+1. running clock hours
+2. types of database
+3. storage
+4. purchase type
+5. database count
+6. API requests:
+7. deployment type: single AZ or multiple Az
+8. data transfer
+
+
+TCO: total cost of ownership: financial estimate that helps you understand both the direct and indirect costs of AWS
+
+Application discovery service: helps you plan migration projects to AWS
+
+Reduce TCO using AWS
+
+* minimize capital expense
+* utilize reserved instances
+* right size your resources
+
+AWS price list api: query the price of AWS services
+
+* json or html
+* price alarm
+
+Pricing: 3 fundamental cost
+
+1. compute
+2. storage
+3. outbound data transfer
+
+Exam:
+
+1. pricing calculator for TCO
+2. remember ways to reduce TCO
+3. pricing
+4. pricing list api
+
+### Billing service
+
+Know ongoing cost
+
+
+Budgets: allows you to set custom budgets that alert you when your costs or usage exceed the amount.
+
+Budget Types:
+
+* cost budgets
+* usage budgets
+* reservation budgets
+
+Cost and Usage report: most comprehensive set of cost and usage data
+
+Cost Explore: allows you to visualize and forecast your cost over time
+
+Exam:
+
+1. Budgets: alert you when your usage exceeds a certain amount
+2. cost and usage report: provide detailed report to your AWS usage
+3. cost explore: visualize and forecast your AWS spending
+4. cost allocation tags: helps you track spend
+
+
+## Governace and management services:
+
+Organizations: allows you centrally manage multiple AWS accounts in one go.
+
+* group multiple accounts
+* single payment for all accounts
+* automate account creation
+* allocate resoruces and apply policies across accounts
+
+benefits of using Organizations:
+
+1. consolidated billing: recieve one bill for multiple accounts
+2. cost savings
+3. account governace: quick way to create accounts or invite existing accounts
+
+Control Tower: helps you ensrue your accounts conform to company-wide policies
+
+* works directly with AWS organizations
+* enfor
+
+
+System Manager: gives you visibility and control over your AWS resources
+
+* automate operational task on resources
+* group actions
+* use CLI on many EC2 instances to manage them
+
+
+Trusted Advisor: provides real-time guidance to help you provision your resources.
+
+free:
+
+* checks for unrestricted access for specififc ports
+* checks S3 bucket permission to determine if public access
+* MFA
+* RDS
+
+no free checks:
+* checks for IAM passrowd policy
+* service usage greater than 80% over the limit
+* exposed access keys
+* cloud front content delivery optimization
+
+License Manager: helps you manage software licenses.
+
+Certificate manager: manage and provision SSL/TLS certificates
+
+
+Exam:
+
+* organization: saves money by consolidated billing
+* SCP service control policies: an organization policy that you want everyone in your organization follow
+* control tower: enforces best use of services across your organization
+* system manager: maintain resources by automatic patching and updates
+* trusted advisor: remember the recommondation made by Trusted Advisor
+* License Manager: manage licenses
+* certificate manager: provides free public certificates
+
+
+### Utilizing Management Services
+
+Managed services: helps you efficently operate your AWS infrastructure
+
+Professional Services: helps enterprise customers moves to a cloud-based operating model
+
+
+APN: is a global community of approved partners that offers software solutions and consulting servies for AWS
+
+
+Marketplace: digital catelog of prebuilt solutions. you can buy the solutiosn
+
+Personal Health Dashboard: alerts you to events that mgiht impact your AWS environment
+
+
+Exam:
+
+* managed services: augments your staff and helps improve your overall operational efficiency.
+* Marketplace and APN: global partner community
+* professional services: help you migrate from on-premises to the cloud
+* personal health dashboard: provides tailored advice
+
+
+### Support Plans
+
+* Basic: included for free to all AWS account
+* Developer: starts at 29 dollor a month and is recommonded for testign and development
+* Business: starts 100 dollor a month and is recommonded for production workloads
+* Enterprise supports: starts at 15000 dollor a month. recommonded for business mission critical production workloads
+
+Exam:
+
+* basic support: know how to open tickets and the types of tickets you're allowed to open
+* developer support: know how to open tickets and the types of tickets you're allowed to open
+* Businesss support: know how to open tickets and the types of tickets you're allowed to open. this supports include the full set of Trusted Advisor checks
+* Enterprise Support: 
+  * know how to open tickets and the types of tickets you're allowed to open.
+  *  this supports include the full set of Trusted Advisor checks
+  *  provides access to a technical Account Manager (TAM) and the concierge support team
 
 
 
