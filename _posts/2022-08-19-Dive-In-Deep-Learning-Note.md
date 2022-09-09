@@ -171,5 +171,5 @@ Core Learning Strategy: iteratively reduce error by updating parameter in the di
 **Note**: vectorizaion of value can lead to dramatic speedups
 
 
-
+In pytorch, data module provides toos for data procesing, nn module gives a large number of neural network layers and common loss function. We can initialize the parameters by replacing their values with methods ending with _. 
 
