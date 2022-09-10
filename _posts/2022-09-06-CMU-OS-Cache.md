@@ -34,6 +34,14 @@ Three steps to determine if a word is miss or hit and then extracting the word:
 2. line matching
 3. word extraction
 
+
+Below is a bits representation for addresses in caches.
+
+![image](../pictures/cache_bit.png)
+
+The number of blocks determine the bits for block in the binary form. The number of sets determines the bits for set in the binar form, and the remaining bits are form tags.
+
+
 ### Direct-Mapped Caches
 
 direct-mapped cache: is a cache with exactly one line per set(E=1).
@@ -93,6 +101,17 @@ Set selection is identical to the direct-mapped cache.
 Line matcing is more complex than direct-mapped cache. Conventional cache is a array values, which recives an address and output the value. An *associative memory* is like an associative array (key-value) pairs. It takes a key and returns one of the value that match the (key-value). This means that there will be more than one paris satisfying a given key.
 
 Consider a set of associative cache as a small associative memory where the keys are concatenation of the tag and valid bits, and the values are the contents of a block. *Note*: it's important to realize that any line in the set can contain any memory blocks that map to the set, so the cache must scan each line in the set to find the valid set.
+
+
+
+### Fully Associative Caches
+
+A fully associative cache is a cache consists of one single set that contains all cache lines.
+
+![image](../pictures/fully_asso_cache.png)
+
+
+
 
 
 
