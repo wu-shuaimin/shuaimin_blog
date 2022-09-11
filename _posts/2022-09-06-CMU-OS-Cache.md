@@ -111,8 +111,50 @@ A fully associative cache is a cache consists of one single set that contains al
 ![image](../pictures/fully_asso_cache.png)
 
 
+### Writing Cache Friendly Code
+
+1. Make the common case go fast:
+2. Minimize the number of cache misses in each inner loop.
+
+```C
+int sumvec(int v[N])
+{
+    int i,sum = 0;
+
+    for(i=0; i<N; i++)
+    {
+        sum += v[i];
+    }
+    return sum;
+}
+```
+
+This program is good at the following point for cache
+
+* repeated references to local variables are good because compilers can store the result in a register
+* stride-1 reference pattersn are good because caches at all levels of the memory hierachy store data as a contiguous blocks.
+
+```C
+//matrix multiplication
+double r=0;
+for(k=0; k<n; k++)
+{
+    for(i=0; i<n; i++)
+    {
+        r = A[i][k];
+        for(j=0; j<n;j++)
+        {
+            C[i][j] += r*B[k][j];
+        }
+    }
+}
+```
+
+This is a cache friendly program utilizing spatial locality. It reads B and C in row major order, so deceased cache misses.
 
 
+Tips for exploiting locality in programs
 
-
-
+* focus on the inner loops, where the bulk of the computations and memory accesses occur.
+* try to maximze the spatial locality by reaing data objects sequentially, with stride 1, in the order they are stored in memory
+* try to maximize the temporal locality by using data objects as often as possible once it has   been read from memory.
