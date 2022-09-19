@@ -116,7 +116,111 @@ int main()
 
 ### How linkers use static libraries to resolve references
 
-The linker will scan the file from left to right and it will maintain a set E of relocatabe object files, a set U of
+The linker will scan the file from left to right and it will maintain a set E of relocatabe object files, a set U of undefined objects, and a set D of defined objects.
+
+* In each input file f, if f is an executable file then it will be marked as E, and linkers will reflect symbols definition and references in U and D accordingly.
+* If f is an archive, linkers will check if symboles defined in f solve any references in U. If solve, then m is added to E. This process will repeat interatively until there is no change in U and D. Finally any object not found in E will be discarded. 
+* If U is non-empty, then linkers will raise an error-message; otherwise, linkers will merge all the executable files and then run.
+
+
+## Relocation
+
+In relocation step, it merges all files togather, and assigns run-time address to all symbols.
+
+Two steps in relocation
+
+1. Relocating  sections and symbol definitions: linkers will merge sections of the same type into a new aggregate of the same type. Then linkers will assign run-time address to all symbols defined in each sections.
+2. Relocating symbol references within sections: linker will modify each symbol so that they point to the correct run-time address. Linkers will depend on a data structure *relocation entries* to achieve the assignments.
+
+### Relocation Entries
+
+
+```C
+typedef struct{
+    long offset; // offset of the reference to relocate
+    long type:32; //relocation type
+    long symbol:32; //symbol table index
+    long addend; //constant part of relocation expression
+} Elf64_Rela;
+```
+
+
+* R_X86_64_PC32: relocate uses a reference 32-bit pc-relative address. (add 32 bit to the address stored in Program counter)
+* R_X86_64_32: relocate a reference that uses a 32-bit absolute address.
+
+### Relocating Symbol references
+
+```C
+
+//relocation algorithm
+foreach section s{
+    foreach relocation entry r{
+        refptr = s + r.offset;  //pointer to reference to be relocated
+
+        // relcoate a pc-relative reference
+        if(r.type == R_X86_64_PC32)
+        {
+            refaddr = ADDR(s) + r.offset;
+            *refptr = (unsigned) (ADDR(r.symbol) + r.addend - refaddr);
+        }
+
+        // relocate an absolute reference
+        if(r.type == R_X86_64_32)
+        {
+            *refptr = (unsigned) (ADDR(r.symbol)+r.addend);
+        }
+    }
+}
+```
+
+## Excutable Object Files
+
+
+![image](../pictures/ex_file.png)
+
+Executable obejct files are similar to relocatable object files. The .text, .rodata, and .data sections are similar but 
+
+## Loading Executable Object Files
+
+```C
+linux -> ./prog
+```
+
+All executable object files are loaded by the *loader*.
+
+This loader copies code and data in executable object files into the memory, and jumps to the first instruction to be executed, known as entry point.
+
+This process of copying the program into memory is called *loading*
+
+On Linux x86-64 the code segment starts at address 0x4000000, followed by the data segment.
+
+The run time heap follows the data segment and grows upward via calls to the malloc library.
+
+This is followed by a region that is reserved for shared modules.
+
+The user stack startsbelow the largest legal user address $$2^{48} -1$$
+
+
+The region above the stack, starting at address $$2^{48}$$ is reserved for the code and data in the kernel, which is main part of hte operating system.
+
+![image](../pictures/runtime.png)
+
+
+## Dynamic Library
+
+Static library needs to be updated periodically, and programmers need to rethink the function implementation.
+
+Shared libraries: is an object module that, at either run time r load time, can be loaded at n arbiratry memory address and linked with a program in memory. This is called *dynamic linking*.
+
+
+Here *shared* have two meanings:
+
+1. in any given file there only one .so file for a particular library. The code and data are shared y all of the executable object files that reference this library. Comparing to static libraries, they are copied and embedded in the executables.
+2. a single copy of the .text section of a shared  library in memory can be shared by different running processes.
+
+
+
+
 
 
 
