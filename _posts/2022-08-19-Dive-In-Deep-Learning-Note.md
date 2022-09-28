@@ -178,6 +178,10 @@ In pytorch, data module provides toos for data procesing, nn module gives a larg
 Because we aim to generalize empirical results to population result and we can't trust our empirical result is unbias and not misleading. 
 We develop the statistical learning theories to determine when and why empirical models can generalize to unseen data.
 
+Test set evaluations have been the central question in machine learning researchs. If we were to evaluate multiple classifiers $$f_i$$ on the same test set, we can't guarantee that none of the error rate $$E_D(f_i)$$ will not be misleading.
+
+Furthermore, this statistical theory can't explain why Deep Neural Networks generalizes well enough,and generalizes better than traditional machine learning models.
+
 
 ## Multilayer Perceptron
 
