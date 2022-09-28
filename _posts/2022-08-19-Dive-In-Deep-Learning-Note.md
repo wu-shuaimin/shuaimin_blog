@@ -173,6 +173,11 @@ Core Learning Strategy: iteratively reduce error by updating parameter in the di
 
 In pytorch, data module provides toos for data procesing, nn module gives a large number of neural network layers and common loss function. We can initialize the parameters by replacing their values with methods ending with _. 
 
+### Statistical Learning Theory
+
+Because we aim to generalize empirical results to population result and we can't trust our empirical result is unbias and not misleading. 
+We develop the statistical learning theories to determine when and why empirical models can generalize to unseen data.
+
 
 ## Multilayer Perceptron
 
