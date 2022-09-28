@@ -173,3 +173,21 @@ Core Learning Strategy: iteratively reduce error by updating parameter in the di
 
 In pytorch, data module provides toos for data procesing, nn module gives a large number of neural network layers and common loss function. We can initialize the parameters by replacing their values with methods ending with _. 
 
+
+## Multilayer Perceptron
+
+ReLu = max(x,0)
+
+is widely used because it doesn't need to perform exponential computation, which is very expensive.
+
+Multi-layer perceptron has a hidden layer in the middle. If we remove the middle layer, then it will be a softmax model.
+
+
+In each node, we will have an activation function such sigmoid, which I have used in my ML lab in 2nd year of UOM.
+
+### Multi Hidden Layer
+
+In this case we have two more hyper parameter to choose.
+
+1. The number of hidden layer
+2. The size of each hidden layer, which is the number of nodes in each layer.
