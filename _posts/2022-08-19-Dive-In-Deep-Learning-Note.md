@@ -218,14 +218,69 @@ Generalization error: the error rate of testing set of a model.
 
 Generalization gap: the gap between training error and testing error.
 
-When generalization gap is large, our model overfitts the training data, indicating that we need shrink the number of features to capture, or reduce the number of non-zero features. (This is similar to variable selection in statistics. Where we determine the p-value to indicate to remove or nott remove the variable)
+When generalization gap is large, our model overfitts the training data, indicating that we need shrink the number of features to capture, or reduce the number of non-zero features. (This is similar to variable selection in statistics. Where we determine the p-value to indicate to remove or not remove the variable)
 
 The relation between generalization gap and model complexity can be non-monotonic.
 
 
+### Dropout
+
+The aim of machine learning is to predict well on seen examples, extracting under-lying patterns. Classical ML thoeries suggest that simple model will shorten the gap between training and testing performance.
+
+Bishop drew the connection between requirements for smoothness of function and reqiurements  for that functions are resillient to perturbations in inputs. (1995)
+
+**Dropout**: is a techniques that we randomly drop some neurons revealing differnent learning path in the path. This is similar to human brain learning, in which we depend less on some neurons and more on others. To find the optimal path, we try different combinations if neurons in the neural networks.
+
+In Dropout, Bishop added a Gaussian noies to the input $$\epsilon \sim N(0, \sigma^2)$$ from which we have $$x' = x + \epsilon$$, where x' is the perturbated input.
+
+Thus we have expectation $$E[x'] = x$$, since $$E[\epsilon] = 0$$
+
+In standard dropout design, we have dropout some nodes with probability p, and normalize those not droped out nodes according to below function.
+
+$$
+h' = 
+\begin{cases}
+0& \text{with probability p}\\
+\frac{h}{1-p}& \text{otherwise}
+\end{cases}
+$$
+
+## Convolutional Neural Network
+
+1. Convolution: apply filters to generate feature maps.
+2. Non-Linearity: Often ReLU
+3. Pooling: Downsampling operation on each feature map.
+
+### Local Connectivity
+
+1. Apply a window of weights
+2. Compute linear combiations
+3. Activate with non-linear function
+
+### CNN for classification: Feature Learning
+
+1. Learn features in input through convolution
+2. Introduce non-linearity thourgh activation function
+3. Reduce dimensionality and preserve spatial invariance with pooling
+
+Convolutional and pooling layers output high-level features of input. These two parts of layers are responsible to extract features. 
+
+Fully-connected layer uses these features for classifying input image. In this part, the architecture can be changed to other  forms, caping other task in ML. It can change to arch. for regression, object detection, sigmentation, as well as probabilistic control
 
 
+Finaly, the pipeline will express the probability of image beloning to a particular class.
+
+$$softmax(x) = \frac{e^{y_i}}{\sum_j{e^{y_j}}} $$
 
 
+### Object Detection With R-CNN
+
+R-CNN: find regions that we think have objects. Use CNN to classify.
+
+1. input image
+2. Extract region proposals
+3. Compute CNN features
+
+*Qustion*: who tells the region? Human gives the heuristic or the computer finds itself?
 
 
