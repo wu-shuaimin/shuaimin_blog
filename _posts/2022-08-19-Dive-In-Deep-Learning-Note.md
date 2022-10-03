@@ -173,3 +173,59 @@ Core Learning Strategy: iteratively reduce error by updating parameter in the di
 
 In pytorch, data module provides toos for data procesing, nn module gives a large number of neural network layers and common loss function. We can initialize the parameters by replacing their values with methods ending with _. 
 
+## Linear Model for Classification
+
+Softmax
+
+$$
+softmax: \hat{y_i} = \frac{\exp{o_i}}{\sum_{k=0}{\exp(o_k)}}
+$$
+
+
+## Forward Propagation, Backward Propagation, and Computational Graph
+
+To implement the model we use forward propagation, and to calculate gradients we use backpropagation.
+
+### Forward Propagation
+
+![image](../pictures/forward.png)
+
+
+### Backward Propagation
+
+The method traverses the neural network from outputs to inputs using chain rule in calculus. 
+
+For the picuture above, the objective is to calculate $$\frac{\partial J}{\partial W_1}$$ and $$\frac{\partial J}{\partial W_2}$$
+
+### Numerical Stability
+
+The problem of vanishing gradients in logistic model causes the gradients might vanish at some points in training, lossing both information and numerical stabiliy.
+
+Alternatively, ReLu with the simple computation and free from vanishing gradient is the default activation function used.
+
+On the other hand, exploding gradients is another problem in training
+
+
+### Generalization in Deep Learning
+
+Classfying and Predicting are our intermediate steps, in Machine learning we aim to **find the general pattern so that we can make correct prediction, even with unseen example from the same underlying population**. 
+
+Although deep learning has good application in CV, NLP, and recommendor system etc, we don't have an answer for question such as *why it fit the model well* and *why it generalizes to unseen example well*. In other words, we don't have an explanation into the black box of deep learning.
+
+#### Revisiting Regularization and Overfitting
+
+Generalization error: the error rate of testing set of a model.
+
+Generalization gap: the gap between training error and testing error.
+
+When generalization gap is large, our model overfitts the training data, indicating that we need shrink the number of features to capture, or reduce the number of non-zero features. (This is similar to variable selection in statistics. Where we determine the p-value to indicate to remove or nott remove the variable)
+
+The relation between generalization gap and model complexity can be non-monotonic.
+
+
+
+
+
+
+
+

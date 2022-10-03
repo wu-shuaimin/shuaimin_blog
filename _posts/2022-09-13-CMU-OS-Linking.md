@@ -219,8 +219,70 @@ Here *shared* have two meanings:
 2. a single copy of the .text section of a shared  library in memory can be shared by different running processes.
 
 
+![image](../pictures/dynamic_link.png)
+
+Non of the code and data sections are actually copied into the executable object file at this point. The linker copies some relocation and symbol table information that will allows references to code and data to be solved at run-time. The loader will load the partially linked executable and loads the *dynamic linker*. The dynamic linker finishes linking by running through the following steps.
+
+* relocating .text and .data of libc.so into some memory segment
+* relocating the text and data of libvector.so into another memory segment
+* relocating any reference in prog2l to symbols definedby libc.so and libvector.so
+
+After this process is finished, the dynamic linker passes control to the application. From herehte location of the shared libraries are fixed and don't change during execution.
 
 
+## Loading and linking shared libraries from application
 
+Previously we worked to compile the shared libraries before run-time. The dynamic linker also can link shared libraries during run-time
 
+```C
+#include <stdio.h>
+#include <stdlib.h>
+#include <dlfcn.h>
 
+int x[2] = {1,2};
+int y[2] = {3,4};
+int z[2];
+
+int main()
+{
+    void *handle;
+    void (*addvec)(int * int * int *, int);
+    char *error;
+
+    //dynamically load the shared library containing addvec()
+    handle = dlopen("./libvector.so", RTLD_LAZY);
+    if(!handle)
+    {
+        fprint(stderr, "%s\n", dlerror());
+        exit(1);
+    }
+
+    // now we can call addvec() just like any other functions
+    addvec(x,y,z,2);
+    printf("z = [%d %d]\n", z[0], z[1]);
+
+    //unload the shared library
+    if(dlclose(handle) < 0){
+        fprintf(stderr, "%s\n", dlerror());
+        exit(1);
+    }
+    return 0;
+}
+
+```
+
+## Position-Independent Code (PIC)
+
+How multiple files can share a single library? Intuitively, we can allocate some space in memory and also load those shared library into the space, but this approach is hard to manage in terms of space, due to wide the range of libaries. This would reslut in inefficient use of memory space. To avoid this, modern compiler will compile the shared libraries in compilation time without passing the task to the linker.
+
+Code that can be loaded without any relocation is known as *position independent code*.
+
+Users direct GNU compilation systems to generate PIC code with the -fpic option to gcc. Shared library must always be compiled with this option.
+
+No matter where we load an object module, the distance between code segment and data segment is always the same. The distance beween any instructions in the code segment and and any variable in the data segment is a run-time constants, independent of the absolute memory locations of the code and data segment.
+
+To create PIC reference, compilers need to include an GOT at he beginning of the data segment.
+
+Global Offset Table: contains an 8-byte  entry for each global data object (procedure or global variable) that is referenced by the object module. It's good to note that each object module has its own GOT
+
+![image](../pictures/pic_process.pnd.png)
