@@ -251,11 +251,70 @@ $$
 2. Non-Linearity: Often ReLU
 3. Pooling: Downsampling operation on each feature map.
 
+### Discussion on Design of CNN Architecture
+
+The design of CNN Arch should be
+
+1. earliest layers should response similarly to whatever in the image. Translation *invariance*
+2. earliest layers should only focus on regions that are near to them rather than distant region. *Locality*
+3. deeper layers should be able to capture longer features
+
+![image](../pictures/hidden_math.png)
+
+The issue here is that to represent the fully connected layers too many nodes need to be memorised.
+
+#### Translation Invariance
+
+X: is the inputs features.
+W: is a fourth order index weight matrix
+U: is the matrix of biases
+V: is a fourth order index weight matrix. The relation between W and V is that $$[W]_{i,j,}$$
+
+This implies a shift in inputs X, should have a shift in hidden layers H. This is possible on when U and V are independent from (i,j), where (i,j) is the position of a pixel. 
+
+This is intuitive, since the bias of a vector of inputs doesn't depend on the order of element in the vector. Similarly, the weights of vectors don't depend on location of the pixel, but rather depends on the information carried by pixiels.
+
+[This portion of the text book mentioned the invariance of location of pixel I discussed above](https://d2l.ai/chapter_convolutional-neural-networks/why-conv.html#:~:text=2.1.%20Translation%20Invariance)
+
+
 ### Local Connectivity
 
 1. Apply a window of weights
 2. Compute linear combiations
 3. Activate with non-linear function
+
+
+![image](../pictures/locality_dl.png)
+
+$$ 
+|a| < \Delta^2 and |b| < \Delta^2
+$$
+
+The equation above is *Convolutional Neural Networks*. They are spatial families of neural networkds which contain convolutional layers
+
+### Convolution
+
+Convolution between two functions $$f,g: \real^d \rightarrow \real$$ is defined as 
+
+$$
+(f*g)(x) = \int f(z)g(z-x)dz
+$$
+
+This means that we meansure the overlap between two functions when one of the function is fliped by y-axis and shifted by x units.
+
+For discrete variables, we turn the integral into a sum.
+
+$$
+(f*g)(i) = \sum_a f(a)g(i-a) 
+$$
+
+For two dimensional functions the convolution is written as 
+
+$$
+(f*g)(i,j) = \sum_a \sum_ f(a,b)g(i-a,j-b)
+$$
+
+In the case of discrete variables, we think the input i and j and the upper bound of value space. The summation starts from a and b, and ends at i and j. If f takes values on (a,b), g will take the remaining area (i-a,j-b)
 
 ### CNN for classification: Feature Learning
 
