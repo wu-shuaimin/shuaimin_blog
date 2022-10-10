@@ -276,8 +276,17 @@ This is intuitive, since the bias of a vector of inputs doesn't depend on the or
 
 [This portion of the text book mentioned the invariance of location of pixel I discussed above](https://d2l.ai/chapter_convolutional-neural-networks/why-conv.html#:~:text=2.1.%20Translation%20Invariance)
 
+$$
+h_{i,j} = \sum_{a,b}v_{i,j,a,b}x_{i+a,j+b}
+$$
 
-### Local Connectivity
+Here the change in i,j will also change the value of the filter. Regardless which location on the image, the filter should have the same weight. To takcle with this issue, we let the following $$v_{i,j,a,b} = v_{a,b}$$
+
+so we have 
+$$h_{i,j} = \sum_{a,b}v_{a,b}x_{i+a,j+b} $$
+This is relative cross
+
+### Locality
 
 1. Apply a window of weights
 2. Compute linear combiations
@@ -288,7 +297,9 @@ This is intuitive, since the bias of a vector of inputs doesn't depend on the or
 
 $$ 
 |a| < \Delta^2 and |b| < \Delta^2
-$$
+$$ so we have the following equation
+
+$$h_{i,j} = \sum_{a=-\Delta}^{\Delta} \sum_{b=-\Delta}^{\Delta} v_{a,b}x_{i+a,j+b} $$
 
 The equation above is *Convolutional Neural Networks*. They are spatial families of neural networkds which contain convolutional layers
 
@@ -342,4 +353,66 @@ R-CNN: find regions that we think have objects. Use CNN to classify.
 
 *Qustion*: who tells the region? Human gives the heuristic or the computer finds itself?
 
+### Two dimensional convolutional layer
 
+![image](../pictures/conv_layer.png)
+
+卷基层就是特殊的全联接层
+
+Two dimensional convolution is the major image application. There are one-dimensional and three-dimensinoal Conv.
+
+* 1D: Text, language, time series
+* 2D: Image
+* 3D: video, medical image, climate map
+
+1D
+$$
+y_i= \sum_{a=1}^h w_a x_{i+a}
+$$
+
+and 3D
+
+$$
+y_{i,j,k} = \sum_{a=1}^h \sum_{b=1}^w \sum_{c=1}^d w_{a,b,c}x_{i+a,j+b,k+c}
+$$
+
+Convolution Laye convolves inputs and kernel matrix and adds a shift to get output.
+
+Kernel Matrix and shift can be learned as hyper parameter
+
+Size of kernel matrix is a hyper parameter
+
+### Convoltion for Images
+
+#### Learning a Kernel
+
+We can first initialize a convolution layer with random weights. In each iteration, we will use squared error to compare Y with the output of the convolution layer, and then we will compute gradients to update the kernel.
+
+The approach mentioned above is similar to a learning algorithm. 
+
+Question: If it follows a gradient descent approach, can we ensure that the function is concave. what are the similarities between learning the kernel comparing with learning a weight of a linear model.
+
+#### Feature Map and Receptive Field
+
+Receptive Field of an Element: is defined as all elements from all previous layers which will affect the calculation of x.
+
+Feature Map: the output of a convolutional layer
+
+When any element needs a larger receptive field to detect input feature over a broader area, we can build a deeper neural network.
+
+### Padding and Striding
+
+Padding can help you to expand the input layer to a larger layer by adding  some paddings around the original layer.
+
+Padding has row $$p_w$$ and column $$p_h$$, so the output will be in dimension $$(n_h - k_h + p_h + 1) \times (n_w - k_w + p_w + 1) $$
+
+Usually, $$p = k - 1 $$ for both dimensions.
+
+* when $$k_h$$ is odd, add padding on top and bottom by $$p_h / 2 $$
+* when $$k_h$$ is even, add padding on top by $$\lceil p_h/2\rceil$$, and on bottom $$\lfloor p_h/2\rfloor $$
+
+
+For given striding with height and width $$s_h$$ and $$s_w$$
+
+* in easy case, if the padding and input are even with even stride, the result dimension will be $$(n_h/s_h) \times (n_w/s_w)$$
+* in general $$(n_h - k_h + p_h + s_h)/s_h \times (n_w - k_w + p_w + s_w)/s_w$$
