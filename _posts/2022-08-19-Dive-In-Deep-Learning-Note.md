@@ -416,3 +416,10 @@ For given striding with height and width $$s_h$$ and $$s_w$$
 
 * in easy case, if the padding and input are even with even stride, the result dimension will be $$(n_h/s_h) \times (n_w/s_w)$$
 * in general $$(n_h - k_h + p_h + s_h)/s_h \times (n_w - k_w + p_w + s_w)/s_w$$
+
+
+
+### Channel
+
+
+
