@@ -418,8 +418,52 @@ For given striding with height and width $$s_h$$ and $$s_w$$
 * in general $$\lfloor(n_h - k_h + p_h + s_h)/s_h\rfloor \times \lfloor(n_w - k_w + p_w + s_w)/s_w\rfloor $$
 
 
+### Multiple input and Multiple Output Channel
 
-### Channel
+Multiple Input
+$$
+Y = \sum_{i=0}^{c_i}X_{i,:,:}\times W_{i,:,:}
+$$
+
+* input X: $$c_i \times n_h \times n_w$$
+* kernel W: $$c_i \times k_h \times k_w$$
+* output Y: $$m_h \times m_w$$
+
+Here every channel has a convolution kernel, and the output is the sum of all channels of convolution kernels
+
+
+#### Multiple Output
+
+Every 3D convolution kernel will generate an output channel
+
+* output X: $$c_i \times n_h \times n_w $$
+* kernel W: $$c_o \times c_i \times k_h \times k_w $$
+* output Y: $$c_o \times m_h \times m_w $$
+
+The ith channel will perform a cross correlation with  the ith layer in the kernel, and it will produce a single layer in the output.
+
+$$
+Y_{i,:,:} = X \times W_{i,:,:,:}~~ for  ~~ i = 1,...,c_o
+$$
+
+Note: here we have four dimentions in the weight matrix W
+
+individually, the components of weight are
+$$ c_o \times c_i \times k_h \times k_w $$ 
+
+The result on each output channel is calculated from the convolution kernel corresponding to that output channel, and takes input from all channels in the input channels
+#### 2D Convolution Layer
+
+* Input X: $$c_i \times n_h \times n_w $$
+* Kernel W: $$c_o \times c_i \times k_h \times k_w $$
+* Bias B: $$c_o \times c_i$$
+* Output Y: $$c_o \times m_h \times m_w $$
+* Complexity: $$O(c_ic_ok_hk_wm_hm_w ) $$
+
+
+### Pooling
+
+
 
 
 
