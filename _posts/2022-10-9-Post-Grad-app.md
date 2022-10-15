@@ -25,6 +25,29 @@ CMU
 * Algorithm, Combinatorics, and Operation Phd [link to this program](https://www.commonapp.org/explore/carnegie-mellon-university)
 
 
+UC Berkley
+
+* 
+
+Georgia Technology Institute [link to the course](https://catalog.gatech.edu/programs/computer-science-ms/#csspecializations)
+
+* master of science in computer science
+  * a degree
+  * good GPA
+  * evidence in the selected field
+  * language score: 雅思(是否可以省略)
+  * the statement of purpose, letters of recommendation
+  * test scores: GRE
+  * relevant work experience
+  * In addition, consideration may be given to how the applicant's background and life experience would contribute significantly to an educationally beneficial mix of students.
+  * cost: $ 18,167 * 2 = 36334
+
+University of Washington [link to the course](https://www.cs.washington.edu/academics/ugrad/current-students/career/grad-school)
+
+[graduate school  descripion link](https://www.cs.washington.edu/academics/ugrad/current-students/career/grad-school)
+
+[graduate info search](https://www.petersons.com/graduate-schools.aspx)
+* 
 
 
 

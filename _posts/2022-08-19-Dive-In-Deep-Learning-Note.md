@@ -431,6 +431,7 @@ $$
 
 Here every channel has a convolution kernel, and the output is the sum of all channels of convolution kernels
 
+![image](../pictures/multi_input.png)
 
 #### Multiple Output
 
@@ -452,6 +453,8 @@ individually, the components of weight are
 $$ c_o \times c_i \times k_h \times k_w $$ 
 
 The result on each output channel is calculated from the convolution kernel corresponding to that output channel, and takes input from all channels in the input channels
+
+
 #### 2D Convolution Layer
 
 * Input X: $$c_i \times n_h \times n_w $$
@@ -463,7 +466,32 @@ The result on each output channel is calculated from the convolution kernel corr
 
 ### Pooling
 
+Pooling layers serve as two purpose: 
+
+1. mitigating sensitivity of  convolution layers to locations
+2. mitigating spatially downsampling representation
+
+Convolution layers are suffered from small perturbations to the spatial space, so we introduce pooling layers to mitigate the issue.
+
+Two major pooling method
+
+1. max-pooling
+2. average-pooling
+
+The former choose the maximum value within the window for pooling layers, and the latter gives the average within the window.
+
+## Lenet
+
+Every channel can be thought as spatial pattern, and we continuously compress the pattern. Finally we use MLP to learn these patterns.
+
+![image](../pictures/lenet.png)
+
+The architecture consists of two parts. First, it has two convolution layers, and second it has three fully connected layers.
+
+The pooling layers used average pooling, and the activation function uses sigmoid.
+
+*Question:* what if we use max pooling and ReLu for activation? do we have performance improvement?
 
 
-
+In order to activate the dense MLP, we have to flattern the layers into a long vector
 
