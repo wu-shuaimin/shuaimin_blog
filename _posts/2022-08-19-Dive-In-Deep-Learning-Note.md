@@ -441,7 +441,8 @@ Every 3D convolution kernel will generate an output channel
 * kernel W: $$c_o \times c_i \times k_h \times k_w $$
 * output Y: $$c_o \times m_h \times m_w $$
 
-The ith channel will perform a cross correlation with  the ith layer in the kernel, and it will produce a single layer in the output.
+The ith channel will perform a cross correlation with  the ith layer in the kernel, and
+ it will produce a single layer in the output.
 
 $$
 Y_{i,:,:} = X \times W_{i,:,:,:}~~ for  ~~ i = 1,...,c_o
@@ -494,4 +495,9 @@ The pooling layers used average pooling, and the activation function uses sigmoi
 
 
 In order to activate the dense MLP, we have to flattern the layers into a long vector
+
+
+## Modern Convolution Neural Netwok
+
+Traditional machine learning experts belive ml is beautiful and eminent in terms of theories, whereas compution vision experts belive that better features extraction techniques and larger and cleaner datasets are more important to accuracy than learning algorithms
 
