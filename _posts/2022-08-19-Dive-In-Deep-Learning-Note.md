@@ -472,13 +472,25 @@ Pooling layers serve as two purpose:
 1. mitigating sensitivity of  convolution layers to locations
 2. mitigating spatially downsampling representation
 
+<<<<<<< HEAD
+## LeNet 
+=======
 Convolution layers are suffered from small perturbations to the spatial space, so we introduce pooling layers to mitigate the issue.
+>>>>>>> a7e4fe06d70d3c0304fac3f0dd4db2649a0ae61f
 
+<<<<<<< HEAD
+* Uses convolution layers to learn spatial information
+* Use Fully connected layers to transform spatial information into categorical information
+=======
 Two major pooling method
+>>>>>>> a7e4fe06d70d3c0304fac3f0dd4db2649a0ae61f
 
 1. max-pooling
 2. average-pooling
 
+<<<<<<< HEAD
+
+=======
 The former choose the maximum value within the window for pooling layers, and the latter gives the average within the window.
 
 ## Lenet
@@ -501,3 +513,5 @@ In order to activate the dense MLP, we have to flattern the layers into a long v
 
 Traditional machine learning experts belive ml is beautiful and eminent in terms of theories, whereas compution vision experts belive that better features extraction techniques and larger and cleaner datasets are more important to accuracy than learning algorithms
 
+
+>>>>>>> a7e4fe06d70d3c0304fac3f0dd4db2649a0ae61f
